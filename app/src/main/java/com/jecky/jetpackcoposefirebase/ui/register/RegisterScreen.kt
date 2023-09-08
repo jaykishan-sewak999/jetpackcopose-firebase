@@ -1,4 +1,4 @@
-package com.jecky.jetpackcoposefirebase.ui.login
+package com.jecky.jetpackcoposefirebase.ui.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
