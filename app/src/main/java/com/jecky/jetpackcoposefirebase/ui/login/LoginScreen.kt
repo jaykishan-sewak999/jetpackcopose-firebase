@@ -14,7 +14,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.util.EmailFieldState
-import org.w3c.dom.Text
+import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,35 +50,45 @@ fun LoginScreen(loginClicked: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(5.dp))
         val emailFieldState by remember { mutableStateOf(EmailFieldState()) }
-      Column() {
-          OutlinedTextField(value = emailFieldState.text, onValueChange = {
-              emailFieldState.text = it
-          },
-              colors = TextFieldDefaults.outlinedTextFieldColors(
-                  unfocusedBorderColor = Color.Gray,
-                  focusedBorderColor = Color.Cyan,
-                  errorBorderColor = Color.Red
-              ),
-              label = {
-                  Text(text = "Email")
-              },
-          isError = emailFieldState.shouldShoeError())
-
-          emailFieldState.showError()?.let {
-              Row(
-                  modifier = Modifier.fillMaxWidth(),
-                  horizontalArrangement = Arrangement.Start
-              ) {
-                  Spacer(modifier = Modifier.height(16.dp))
-                  Text(text = it,
-                  style = TextStyle(color = Color.Red)
-                  )
-              }
-          }
-      }
+        val passwordFieldState by remember {
+            mutableStateOf(PasswordFieldState())
+        }
 
         OutlinedTextField(
-            value = "", onValueChange = {},
+            value = emailFieldState.text,
+            onValueChange = {
+                emailFieldState.text = it
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Gray,
+                focusedBorderColor = Color.Cyan,
+                errorBorderColor = Color.Red
+            ),
+            label = {
+                Text(text = "Email")
+            },
+            isError = emailFieldState.shouldShoeError(),
+
+            )
+
+        emailFieldState.showError()?.let {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = it,
+                    style = TextStyle(color = Color.Red)
+                )
+            }
+        }
+
+
+        OutlinedTextField(
+            value = passwordFieldState.text, onValueChange = {
+                passwordFieldState.text = it
+            },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color.Gray,
                 focusedBorderColor = Color.Cyan
@@ -87,7 +96,21 @@ fun LoginScreen(loginClicked: () -> Unit) {
             label = {
                 Text(text = "Password")
             },
+            isError = passwordFieldState.shouldShoeError()
         )
+        passwordFieldState.showError()?.let {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = it,
+                    style = TextStyle(color = Color.Red)
+                )
+            }
+        }
+
         Spacer(modifier = Modifier.height(5.dp))
         Button(
             onClick = { /*TODO*/ }, modifier = Modifier
