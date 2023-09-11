@@ -29,7 +29,7 @@ import org.w3c.dom.Text
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(loginClicked: () -> Unit) {
+fun RegisterScreen(loginClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -82,7 +82,7 @@ fun LoginScreen(loginClicked: () -> Unit) {
 @Preview
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(loginClicked = {
+    RegisterScreen(loginClicked = {
 
     })
 }
