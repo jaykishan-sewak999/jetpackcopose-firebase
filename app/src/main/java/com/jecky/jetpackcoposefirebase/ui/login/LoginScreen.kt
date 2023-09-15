@@ -1,6 +1,7 @@
 package com.jecky.jetpackcoposefirebase.ui.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,7 @@ import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(loginClicked: () -> Unit) {
+fun LoginScreen(signInClicked: () -> Unit, registerClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -68,61 +69,57 @@ fun LoginScreen(loginClicked: () -> Unit) {
                 Text(text = "Email")
             },
             isError = emailFieldState.shouldShoeError(),
-
-            )
+        )
 
         emailFieldState.showError()?.let {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = it,
-                    style = TextStyle(color = Color.Red)
-                )
-            }
+            Text(
+                text = it, style = TextStyle(color = Color.Red),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Start)
+                    .padding(horizontal = 40.dp)
+            )
         }
-
+        Spacer(modifier = Modifier.height(10.dp))
 
         OutlinedTextField(
             value = passwordFieldState.text, onValueChange = {
                 passwordFieldState.text = it
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray,
-                focusedBorderColor = Color.Cyan
-            ),
-            label = {
+            }, colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
+            ), label = {
                 Text(text = "Password")
-            },
-            isError = passwordFieldState.shouldShoeError()
+            }, isError = passwordFieldState.shouldShoeError()
         )
         passwordFieldState.showError()?.let {
             Row(
-                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = it,
-                    style = TextStyle(color = Color.Red)
+                    text = it, style = TextStyle(color = Color.Red)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Button(
-            onClick = { /*TODO*/ }, modifier = Modifier
+            onClick = {
+                signInClicked()
+            }, modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = 30.dp),
+            enabled = emailFieldState.isValid && passwordFieldState.isValid
         ) {
             Text(text = "Login")
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
-            Text(text = "Already have account? ")
-            Text(text = "Sign Up", style = TextStyle(color = Color.Blue))
+            Text(text = "Don't have account? ")
+            Text(text = "Sign Up", style = TextStyle(color = Color.Blue),
+            modifier = Modifier.clickable {
+                registerClicked()
+            })
 
         }
     }
@@ -132,7 +129,9 @@ fun LoginScreen(loginClicked: () -> Unit) {
 @Preview
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(loginClicked = {
+    LoginScreen(signInClicked = {
+
+    }, registerClicked = {
 
     })
 }
