@@ -67,6 +67,15 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
             label = {
                 Text(text = "Email")
             })
+        emailFieldState.showError()?.let {
+            Text(
+                text = it, style = TextStyle(color = Color.Red),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Start)
+                    .padding(horizontal = 36.dp)
+            )
+        }
         OutlinedTextField(
             value = passFieldState.text,
             onValueChange = {
@@ -80,6 +89,15 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
                 Text(text = "Password")
             },
         )
+        passFieldState.showError()?.let {
+            Text(
+                text = it, style = TextStyle(color = Color.Red),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Start)
+                    .padding(horizontal = 36.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(15.dp))
         OutlinedTextField(
             value = confirmPasswordFieldState.text,
@@ -94,6 +112,9 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
                 Text(text = "Confirm Password")
             },
         )
+        confirmPasswordFieldState.showError()?.let {
+            Text(text = it, style = TextStyle(color = Color.Red))
+        }
         Spacer(modifier = Modifier.height(15.dp))
 
 
@@ -102,6 +123,7 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
+            enabled = emailFieldState.isValid && passFieldState.isValid && confirmPasswordFieldState.isValid
         ) {
             Text(text = "Register")
         }
