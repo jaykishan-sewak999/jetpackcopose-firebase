@@ -14,9 +14,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,11 +27,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jecky.jetpackcoposefirebase.R
-import org.w3c.dom.Text
+import com.jecky.jetpackcoposefirebase.util.ConfirmPasswordFieldState
+import com.jecky.jetpackcoposefirebase.util.EmailFieldState
+import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(loginClicked: () -> Unit) {
+fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -45,16 +49,29 @@ fun RegisterScreen(loginClicked: () -> Unit) {
                 .height(100.dp)
                 .width(100.dp)
         )
-        Spacer(modifier = Modifier.height(5.dp))
-        OutlinedTextField(value = "", onValueChange = {},
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = Color.Gray,
-            focusedBorderColor = Color.Cyan
-        ),
-        label = {
-            Text(text = "Email")
-        })
-        OutlinedTextField(value = "", onValueChange = {},
+        Spacer(modifier = Modifier.height(15.dp))
+
+        val emailFieldState by remember { mutableStateOf(EmailFieldState()) }
+        val passFieldState by remember { mutableStateOf(PasswordFieldState()) }
+        val confirmPasswordFieldState by remember {
+            mutableStateOf(ConfirmPasswordFieldState(passFieldState))
+        }
+
+        OutlinedTextField(value = emailFieldState.text, onValueChange = {
+            emailFieldState.text = it
+        },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Gray,
+                focusedBorderColor = Color.Cyan
+            ),
+            label = {
+                Text(text = "Email")
+            })
+        OutlinedTextField(
+            value = passFieldState.text,
+            onValueChange = {
+                passFieldState.text = it
+            },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color.Gray,
                 focusedBorderColor = Color.Cyan
@@ -63,16 +80,35 @@ fun RegisterScreen(loginClicked: () -> Unit) {
                 Text(text = "Password")
             },
         )
-        Spacer(modifier = Modifier.height(5.dp))
-        Button(onClick = { /*TODO*/ }, modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 30.dp)) {
-            Text(text = "Login")
+        Spacer(modifier = Modifier.height(15.dp))
+        OutlinedTextField(
+            value = confirmPasswordFieldState.text,
+            onValueChange = {
+                confirmPasswordFieldState.text = it
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Gray,
+                focusedBorderColor = Color.Cyan
+            ),
+            label = {
+                Text(text = "Confirm Password")
+            },
+        )
+        Spacer(modifier = Modifier.height(15.dp))
+
+
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 30.dp),
+        ) {
+            Text(text = "Register")
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
             Text(text = "Already have account? ")
-            Text(text = "Sign Up", style = TextStyle(color = Color.Blue))
+            Text(text = "Sign In", style = TextStyle(color = Color.Blue))
 
         }
     }
@@ -83,6 +119,8 @@ fun RegisterScreen(loginClicked: () -> Unit) {
 @Composable
 fun PreviewLoginScreen() {
     RegisterScreen(loginClicked = {
+
+    }, registerClicked = {
 
     })
 }
