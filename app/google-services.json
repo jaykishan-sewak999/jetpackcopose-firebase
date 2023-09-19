@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "468802836429",
+    "project_id": "jetpackcomposeadr",
+    "storage_bucket": "jetpackcomposeadr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468802836429:android:e68c85ca50984fc8271684",
+        "android_client_info": {
+          "package_name": "com.jecky.jetpackcoposefirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTPLw0abL8WXLQe10M91JzGj60o4COXBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
