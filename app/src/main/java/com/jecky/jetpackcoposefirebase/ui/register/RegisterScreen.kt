@@ -1,5 +1,6 @@
 package com.jecky.jetpackcoposefirebase.ui.register
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,11 +24,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.R
+import com.jecky.jetpackcoposefirebase.model.APIRESULT
 import com.jecky.jetpackcoposefirebase.util.ConfirmPasswordFieldState
 import com.jecky.jetpackcoposefirebase.util.EmailFieldState
 import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
@@ -59,17 +64,15 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
 
         OutlinedTextField(value = emailFieldState.text, onValueChange = {
             emailFieldState.text = it
-        },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray,
-                focusedBorderColor = Color.Cyan
-            ),
-            label = {
-                Text(text = "Email")
-            })
+        }, colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
+        ), label = {
+            Text(text = "Email")
+        })
         emailFieldState.showError()?.let {
             Text(
-                text = it, style = TextStyle(color = Color.Red),
+                text = it,
+                style = TextStyle(color = Color.Red),
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Start)
@@ -82,8 +85,7 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
                 passFieldState.text = it
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray,
-                focusedBorderColor = Color.Cyan
+                unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
             ),
             label = {
                 Text(text = "Password")
@@ -91,7 +93,8 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
         )
         passFieldState.showError()?.let {
             Text(
-                text = it, style = TextStyle(color = Color.Red),
+                text = it,
+                style = TextStyle(color = Color.Red),
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Start)
@@ -105,8 +108,7 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
                 confirmPasswordFieldState.text = it
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray,
-                focusedBorderColor = Color.Cyan
+                unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
             ),
             label = {
                 Text(text = "Confirm Password")
@@ -116,16 +118,28 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
             Text(text = it, style = TextStyle(color = Color.Red))
         }
         Spacer(modifier = Modifier.height(15.dp))
+        val signUpViewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory())
 
-
+        val context = LocalContext.current
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                signUpViewModel.doLogin(emailFieldState.text, passFieldState.text)
+                if (signUpViewModel.authResponse.status == APIRESULT.SUCCESS.name) {
+                    Toast.makeText(context,"Success",Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    Toast.makeText(context,signUpViewModel.authResponse.message,Toast.LENGTH_LONG).show()
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
             enabled = emailFieldState.isValid && passFieldState.isValid && confirmPasswordFieldState.isValid
         ) {
-            Text(text = "Register")
+            if (signUpViewModel.showLoading) {
+                CircularProgressIndicator(color = Color.Cyan)
+            } else Text(text = "Register")
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row() {

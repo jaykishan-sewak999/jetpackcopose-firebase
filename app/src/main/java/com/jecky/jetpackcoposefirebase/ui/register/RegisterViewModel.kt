@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.AuthResult
+import com.jecky.jetpackcoposefirebase.model.APIRESULT
 import com.jecky.jetpackcoposefirebase.network.APIResult
-import com.jecky.jetpackcoposefirebase.network.UsersListResponse
+import com.jecky.jetpackcoposefirebase.model.UsersAuthResponse
 import com.jecky.jetpackcoposefirebase.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,21 +16,27 @@ import kotlinx.coroutines.launch
 
 class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
 
-    val shouldShowLoginLoader: Boolean by mutableStateOf(false)
-    private val mutableState = MutableStateFlow<APIResult<*>>(APIResult.NONE)
-    val state = mutableState.asStateFlow()
-    fun doLogin(email: String, password: String) {
+    var authResponse: UsersAuthResponse by mutableStateOf(UsersAuthResponse())
+    var showLoading: Boolean by mutableStateOf(false)
 
-        /*viewModelScope.launch {
+    fun doLogin(email: String, password: String) {
+        showLoading = true
+        viewModelScope.launch {
             when (val response = repository.register(email, password)) {
                 is APIResult.APISuccess<*> -> {
-                        //mutableState.value = response.data!!
+                    authResponse = response.data!!
+                    authResponse.status = APIRESULT.SUCCESS.name
+                    showLoading = false
                 }
                 is APIResult.APIFailure<*> -> {
-
+                    showLoading = false
+                    authResponse.status = APIRESULT.FAIL.name
+                    authResponse.message = response.errorMessage
                 }
+
+                else -> {}
             }
-        }*/
+        }
 
     }
 }
