@@ -1,6 +1,5 @@
 package com.jecky.jetpackcoposefirebase.ui.register
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.R
-import com.jecky.jetpackcoposefirebase.model.APIRESULT
 import com.jecky.jetpackcoposefirebase.util.ConfirmPasswordFieldState
 import com.jecky.jetpackcoposefirebase.util.EmailFieldState
 import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
@@ -121,16 +119,11 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
         val signUpViewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory())
 
         val context = LocalContext.current
+        var authResponse = signUpViewModel.doLogin
         Button(
             onClick = {
-                signUpViewModel.doLogin(emailFieldState.text, passFieldState.text)
-                if (signUpViewModel.authResponse.status == APIRESULT.SUCCESS.name) {
-                    Toast.makeText(context,"Success",Toast.LENGTH_LONG).show()
-                }
-                else
-                {
-                    Toast.makeText(context,signUpViewModel.authResponse.message,Toast.LENGTH_LONG).show()
-                }
+                val result = signUpViewModel.doLogin(emailFieldState.text, passFieldState.text)
+                1
             },
             modifier = Modifier
                 .fillMaxWidth()
