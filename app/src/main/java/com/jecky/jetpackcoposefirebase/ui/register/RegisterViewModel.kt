@@ -12,7 +12,6 @@ import com.google.firebase.auth.AuthResult
 import com.jecky.jetpackcoposefirebase.network.APIResult
 import com.jecky.jetpackcoposefirebase.repository.AuthRepository
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.
 
 class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
 
@@ -22,7 +21,7 @@ class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
     private var _doLogin: MutableLiveData<AuthResult> = MutableLiveData<AuthResult>()
     var doLogin: LiveData<AuthResult> = _doLogin
 
-    fun doLogin(email: String, password: String){
+    fun doLogin(email: String, password: String) {
         showLoading = true
         viewModelScope.launch {
             when (val response = repository.register(email, password)) {
