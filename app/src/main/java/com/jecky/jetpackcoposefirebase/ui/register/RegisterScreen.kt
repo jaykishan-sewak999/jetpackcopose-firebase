@@ -134,7 +134,7 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
             } else Text(text = "Register")
         }
         if (signUpViewModel.loginState != 0) {
-            if (signUpViewModel.doLogin.value == null){
+            if (signUpViewModel.doRegister.value == null){
                 Toast.makeText(context,"Fail",Toast.LENGTH_LONG).show()
             }
             else{
@@ -145,10 +145,8 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
         Row() {
             Text(text = "Already have account? ")
             Text(text = "Sign In", style = TextStyle(color = Color.Blue))
-
         }
     }
-
 }
 
 @Preview

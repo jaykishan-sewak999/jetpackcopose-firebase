@@ -20,8 +20,8 @@ class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
     var showLoading: Boolean by mutableStateOf(false)
     var loginState: Int by mutableIntStateOf(0)
 
-    private var _doLogin: MutableLiveData<AuthResult> = MutableLiveData<AuthResult>()
-    var doLogin: LiveData<AuthResult> = _doLogin
+    private var _doRegister: MutableLiveData<AuthResult> = MutableLiveData<AuthResult>()
+    var doRegister: LiveData<AuthResult> = _doRegister
 
     fun doLogin(email: String, password: String) {
         showLoading = true
@@ -29,14 +29,14 @@ class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
             when (val response = repository.register(email, password)) {
                 is APIResult.APISuccess -> {
                     loginState = 1
-                    _doLogin.value = response.data
+                    _doRegister.value = response.data
                     showLoading = false
                 }
 
                 is APIResult.APIFailure -> {
                     loginState = 2
                     showLoading = false
-                    _doLogin.value = null
+                    _doRegister.value = null
                 }
 
                 else -> {}
