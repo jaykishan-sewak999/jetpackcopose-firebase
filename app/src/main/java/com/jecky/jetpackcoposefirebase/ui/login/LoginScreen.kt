@@ -1,5 +1,6 @@
 package com.jecky.jetpackcoposefirebase.ui.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -23,10 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.util.EmailFieldState
 import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
@@ -101,25 +105,42 @@ fun LoginScreen(signInClicked: () -> Unit, registerClicked: () -> Unit) {
                 )
             }
         }
+        val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
+        val context = LocalContext.current
 
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
+                loginViewModel.doLogin(emailFieldState.text, passwordFieldState.text)
                 signInClicked()
             }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
             enabled = emailFieldState.isValid && passwordFieldState.isValid
         ) {
-            Text(text = "Login")
+            if (loginViewModel.loading) {
+                CircularProgressIndicator(color = Color.Cyan)
+            } else Text(text = "Login")
+        }
+        if (loginViewModel.loginState != 0) {
+            if (loginViewModel.doLogin.value == null){
+                Toast.makeText(context, "Login failed",Toast.LENGTH_LONG).show()
+                loginViewModel.loginState = 0
+            }
+            else{
+                loginViewModel.loginState = 0
+                Toast.makeText(context, "Login success",Toast.LENGTH_LONG).show()
+
+                //signInClicked()
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
             Text(text = "Don't have account? ")
             Text(text = "Sign Up", style = TextStyle(color = Color.Blue),
-            modifier = Modifier.clickable {
-                registerClicked()
-            })
+                modifier = Modifier.clickable {
+                    registerClicked()
+                })
 
         }
     }
