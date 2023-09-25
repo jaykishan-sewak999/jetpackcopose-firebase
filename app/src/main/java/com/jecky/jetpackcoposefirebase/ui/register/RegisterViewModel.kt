@@ -1,6 +1,7 @@
 package com.jecky.jetpackcoposefirebase.ui.register
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
@@ -17,6 +18,7 @@ class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
 
     //    var authResponse: UsersAuthResponse by mutableStateOf(UsersAuthResponse())
     var showLoading: Boolean by mutableStateOf(false)
+    var loginState: Int by mutableIntStateOf(0)
 
     private var _doLogin: MutableLiveData<AuthResult> = MutableLiveData<AuthResult>()
     var doLogin: LiveData<AuthResult> = _doLogin
@@ -26,12 +28,15 @@ class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
         viewModelScope.launch {
             when (val response = repository.register(email, password)) {
                 is APIResult.APISuccess -> {
+                    loginState = 1
                     _doLogin.value = response.data
                     showLoading = false
                 }
 
                 is APIResult.APIFailure -> {
+                    loginState = 2
                     showLoading = false
+                    _doLogin.value = null
                 }
 
                 else -> {}

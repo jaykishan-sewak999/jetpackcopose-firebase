@@ -1,5 +1,6 @@
 package com.jecky.jetpackcoposefirebase.ui.register
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -119,11 +120,9 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
         val signUpViewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory())
 
         val context = LocalContext.current
-        var authResponse = signUpViewModel.doLogin
         Button(
             onClick = {
-                val result = signUpViewModel.doLogin(emailFieldState.text, passFieldState.text)
-                1
+                signUpViewModel.doLogin(emailFieldState.text, passFieldState.text)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -133,6 +132,14 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
             if (signUpViewModel.showLoading) {
                 CircularProgressIndicator(color = Color.Cyan)
             } else Text(text = "Register")
+        }
+        if (signUpViewModel.loginState != 0) {
+            if (signUpViewModel.doLogin.value == null){
+                Toast.makeText(context,"Fail",Toast.LENGTH_LONG).show()
+            }
+            else{
+                Toast.makeText(context,"Success",Toast.LENGTH_LONG).show()
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
