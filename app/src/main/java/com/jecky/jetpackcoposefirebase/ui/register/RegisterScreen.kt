@@ -138,7 +138,9 @@ fun RegisterScreen(loginClicked: () -> Unit, registerClicked: () -> Unit) {
                 Toast.makeText(context,"Fail",Toast.LENGTH_LONG).show()
             }
             else{
-                Toast.makeText(context,"Success",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"You are successfully registered",Toast.LENGTH_LONG).show()
+                signUpViewModel.addUserData(email = emailFieldState.text, userId = signUpViewModel.doRegister.value!!.user?.uid!!)
+
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
