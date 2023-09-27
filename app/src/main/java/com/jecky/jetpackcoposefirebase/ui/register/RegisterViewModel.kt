@@ -12,9 +12,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthResult
 import com.jecky.jetpackcoposefirebase.network.APIResult
 import com.jecky.jetpackcoposefirebase.repository.AuthRepository
+import com.jecky.jetpackcoposefirebase.repository.UserRepository
+import com.jecky.jetpackcoposefirebase.repository.model.User
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
+class RegisterViewModel(val repository: AuthRepository, val userRepository: UserRepository) : ViewModel() {
 
     //    var authResponse: UsersAuthResponse by mutableStateOf(UsersAuthResponse())
     var showLoading: Boolean by mutableStateOf(false)
@@ -44,13 +46,25 @@ class RegisterViewModel(val repository: AuthRepository) : ViewModel() {
         }
 
     }
+
+    fun addUserData(email: String, userId:String){
+
+        try {
+            viewModelScope.launch {
+                val result = userRepository.addUserData(User(userId = userId,email))
+            }
+        }
+        catch (exception: Exception){
+
+        }
+    }
 }
 
 class RegisterViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-            return RegisterViewModel(AuthRepository()) as T
+            return RegisterViewModel(AuthRepository(), UserRepository()) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
