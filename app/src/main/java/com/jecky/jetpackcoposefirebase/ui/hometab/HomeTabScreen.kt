@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.jecky.jetpackcoposefirebase.NavGraph
+import com.jecky.jetpackcoposefirebase.NavGraphDashboard
 import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.repository.model.BottomNavigationItem
 
@@ -23,7 +23,7 @@ import com.jecky.jetpackcoposefirebase.repository.model.BottomNavigationItem
 fun HomeTabScreen() {
     val navController = rememberNavController()
     Scaffold(bottomBar = { BottomNavigationComponent(navigator = navController) }) {
-        NavGraph(navController = navController)
+        NavGraphDashboard(navController = navController)
     }
 }
 
@@ -41,11 +41,20 @@ fun BottomNavigationComponent(navigator: NavHostController) {
         contentColor = Color.Black
     ) {
         items.forEach { item ->
-            BottomNavigationItem(selected = currRoute == item.route, onClick = { /*TODO*/ },
+            BottomNavigationItem(selected = currRoute == item.route, onClick = {
+                navigator.navigate(item.route) {
+                    navigator.graph.startDestinationRoute?.let { screen_route ->
+                        popUpTo(screen_route) {
+                            saveState = true
+                        }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            },
                 icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
                 alwaysShowLabel = true,
-                selectedContentColor = Color.Black,
-                unselectedContentColor = Color.Black.copy(0.4f),
+
                 label = { Text(text = item.title) })
         }
     }

@@ -5,12 +5,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.jecky.jetpackcoposefirebase.Destinations.CATEGORY_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.HOME_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.HOME_TAB_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
+import com.jecky.jetpackcoposefirebase.Destinations.PROFILE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.REGISTER_SCREEN
+import com.jecky.jetpackcoposefirebase.ui.category.CategoryScreen
+import com.jecky.jetpackcoposefirebase.ui.home.HomeScreen
 import com.jecky.jetpackcoposefirebase.ui.hometab.HomeTabScreen
 import com.jecky.jetpackcoposefirebase.ui.login.LoginRoute
+import com.jecky.jetpackcoposefirebase.ui.profile.ProfileScreen
 import com.jecky.jetpackcoposefirebase.ui.register.RegisterRoute
 
 object Destinations {
@@ -50,7 +55,13 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
 fun NavGraphDashboard(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = HOME_SCREEN) {
         composable(HOME_SCREEN) {
-            HomeTabScreen()
+            HomeScreen()
+        }
+        composable(PROFILE_SCREEN) {
+            ProfileScreen()
+        }
+        composable(CATEGORY_SCREEN) {
+            CategoryScreen()
         }
     }
 }
