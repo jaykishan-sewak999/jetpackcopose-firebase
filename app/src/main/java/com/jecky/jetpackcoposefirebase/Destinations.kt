@@ -5,34 +5,63 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.jecky.jetpackcoposefirebase.Destinations.CATEGORY_SCREEN
+import com.jecky.jetpackcoposefirebase.Destinations.HOME_SCREEN
+import com.jecky.jetpackcoposefirebase.Destinations.HOME_TAB_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
+import com.jecky.jetpackcoposefirebase.Destinations.PROFILE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.REGISTER_SCREEN
+import com.jecky.jetpackcoposefirebase.ui.category.CategoryScreen
+import com.jecky.jetpackcoposefirebase.ui.home.HomeScreen
+import com.jecky.jetpackcoposefirebase.ui.hometab.HomeTabScreen
 import com.jecky.jetpackcoposefirebase.ui.login.LoginRoute
-import com.jecky.jetpackcoposefirebase.ui.login.LoginScreen
+import com.jecky.jetpackcoposefirebase.ui.profile.ProfileScreen
 import com.jecky.jetpackcoposefirebase.ui.register.RegisterRoute
-import com.jecky.jetpackcoposefirebase.ui.register.RegisterScreen
 
 object Destinations {
     const val LOGIN_SCREEN = "login"
     const val REGISTER_SCREEN = "register"
+    const val HOME_TAB_SCREEN = "home_tab"
+    const val HOME_SCREEN = "home"
+    const val PROFILE_SCREEN = "profile"
+    const val CATEGORY_SCREEN = "category"
 }
 
 @Composable
 fun NavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = LOGIN_SCREEN) {
         composable(LOGIN_SCREEN) {
-            LoginRoute(loginClicked = {
+            LoginRoute(signInSuccess = {
+                navController.navigate(HOME_TAB_SCREEN)
 
             }, registerClicked = {
                 navController.navigate(REGISTER_SCREEN)
             })
         }
         composable(REGISTER_SCREEN) {
-          RegisterRoute(registerClicked = {
+            RegisterRoute(registerSuccess = {
+                navController.navigate(HOME_TAB_SCREEN)
+            }, loginClicked = {
+                navController.navigate(LOGIN_SCREEN)
+            })
+        }
+        composable(HOME_TAB_SCREEN) {
+            HomeTabScreen()
+        }
+    }
+}
 
-          }, loginClicked = {
-
-          })
+@Composable
+fun NavGraphDashboard(navController: NavHostController = rememberNavController()) {
+    NavHost(navController = navController, startDestination = HOME_SCREEN) {
+        composable(HOME_SCREEN) {
+            HomeScreen()
+        }
+        composable(PROFILE_SCREEN) {
+            ProfileScreen()
+        }
+        composable(CATEGORY_SCREEN) {
+            CategoryScreen()
         }
     }
 }

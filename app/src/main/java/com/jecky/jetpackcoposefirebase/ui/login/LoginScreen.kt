@@ -37,7 +37,7 @@ import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(signInClicked: () -> Unit, registerClicked: () -> Unit) {
+fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -112,7 +112,6 @@ fun LoginScreen(signInClicked: () -> Unit, registerClicked: () -> Unit) {
         Button(
             onClick = {
                 loginViewModel.doLogin(emailFieldState.text, passwordFieldState.text)
-                signInClicked()
             }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
@@ -130,8 +129,7 @@ fun LoginScreen(signInClicked: () -> Unit, registerClicked: () -> Unit) {
             else{
                 loginViewModel.loginState = 0
                 Toast.makeText(context, "Login success",Toast.LENGTH_LONG).show()
-
-                //signInClicked()
+                signInSuccess()
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -150,7 +148,7 @@ fun LoginScreen(signInClicked: () -> Unit, registerClicked: () -> Unit) {
 @Preview
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(signInClicked = {
+    LoginScreen(signInSuccess = {
 
     }, registerClicked = {
 
