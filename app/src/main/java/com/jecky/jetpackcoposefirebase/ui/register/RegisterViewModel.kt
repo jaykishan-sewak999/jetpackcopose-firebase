@@ -52,6 +52,7 @@ class RegisterViewModel(val repository: AuthRepository, val userRepository: User
         try {
             viewModelScope.launch {
                 val result = userRepository.addUserData(User(userId = userId,email))
+                loginState = 0
             }
         }
         catch (exception: Exception){
