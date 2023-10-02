@@ -3,8 +3,8 @@ package com.jecky.jetpackcoposefirebase.ui.login
 import androidx.compose.runtime.Composable
 
 @Composable
-fun LoginRoute(loginClicked: () -> Unit, registerClicked: () -> Unit) {
+fun LoginRoute(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
     LoginScreen(
-        signInClicked = loginClicked, registerClicked = registerClicked
+        signInSuccess = signInSuccess, registerClicked = registerClicked
     )
 }
