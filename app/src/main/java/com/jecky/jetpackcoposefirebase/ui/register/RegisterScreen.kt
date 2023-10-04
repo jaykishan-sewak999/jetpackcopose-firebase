@@ -60,86 +60,28 @@ fun RegisterScreen(loginClicked: () -> Unit, registerSuccess: () -> Unit) {
         val confirmPasswordFieldState by remember {
             mutableStateOf(ConfirmPasswordFieldState(passFieldState))
         }
+        EmailInputComponent(emailFieldState)
+        PasswordComponent(passFieldState)
 
-        OutlinedTextField(value = emailFieldState.text, onValueChange = {
-            emailFieldState.text = it
-        }, colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
-        ), label = {
-            Text(text = "Email")
-        })
-        emailFieldState.showError()?.let {
-            Text(
-                text = it,
-                style = TextStyle(color = Color.Red),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Start)
-                    .padding(horizontal = 36.dp)
-            )
-        }
-        OutlinedTextField(
-            value = passFieldState.text,
-            onValueChange = {
-                passFieldState.text = it
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
-            ),
-            label = {
-                Text(text = "Password")
-            },
-        )
-        passFieldState.showError()?.let {
-            Text(
-                text = it,
-                style = TextStyle(color = Color.Red),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Start)
-                    .padding(horizontal = 36.dp)
-            )
-        }
         Spacer(modifier = Modifier.height(15.dp))
-        OutlinedTextField(
-            value = confirmPasswordFieldState.text,
-            onValueChange = {
-                confirmPasswordFieldState.text = it
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
-            ),
-            label = {
-                Text(text = "Confirm Password")
-            },
-        )
-        confirmPasswordFieldState.showError()?.let {
-            Text(text = it, style = TextStyle(color = Color.Red))
-        }
+        ConfirmPasswordComponent(confirmPasswordFieldState)
+
         Spacer(modifier = Modifier.height(15.dp))
         val signUpViewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory())
 
         val context = LocalContext.current
-        Button(
-            onClick = {
-                signUpViewModel.doLogin(emailFieldState.text, passFieldState.text)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 30.dp),
-            enabled = emailFieldState.isValid && passFieldState.isValid && confirmPasswordFieldState.isValid
-        ) {
-            if (signUpViewModel.showLoading) {
-                CircularProgressIndicator(color = Color.Cyan)
-            } else Text(text = "Register")
-        }
+        LoginButton(signUpViewModel, emailFieldState, passFieldState, confirmPasswordFieldState)
         if (signUpViewModel.loginState != 0) {
-            if (signUpViewModel.doRegister.value == null){
-                Toast.makeText(context,"Fail",Toast.LENGTH_LONG).show()
-            }
-            else{
-                Toast.makeText(context,"You are successfully registered",Toast.LENGTH_LONG).show()
-                signUpViewModel.addUserData(email = emailFieldState.text, userId = signUpViewModel.doRegister.value!!.user?.uid!!)
+            if (signUpViewModel.doRegister.value == null) {
+                Toast.makeText(context, "Fail", Toast.LENGTH_LONG).show()
+                signUpViewModel.loginState = 0
+            } else {
+                Toast.makeText(context, "You are successfully registered", Toast.LENGTH_LONG).show()
+                signUpViewModel.loginState = 0
+               /* signUpViewModel.addUserData(
+                    email = emailFieldState.text,
+                    userId = signUpViewModel.doRegister.value!!.user?.uid!!
+                )*/
                 registerSuccess()
             }
         }
@@ -148,6 +90,101 @@ fun RegisterScreen(loginClicked: () -> Unit, registerSuccess: () -> Unit) {
             Text(text = "Already have account? ")
             Text(text = "Sign In", style = TextStyle(color = Color.Blue))
         }
+    }
+}
+
+@Composable
+fun LoginButton(
+    signUpViewModel: RegisterViewModel,
+    emailFieldState: EmailFieldState,
+    passFieldState: PasswordFieldState,
+    confirmPasswordFieldState: ConfirmPasswordFieldState
+) {
+    Button(
+        onClick = {
+            signUpViewModel.doLogin(emailFieldState.text, passFieldState.text)
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 30.dp),
+        enabled = emailFieldState.isValid && passFieldState.isValid && confirmPasswordFieldState.isValid
+    ) {
+        if (signUpViewModel.showLoading) {
+            CircularProgressIndicator(color = Color.Cyan)
+        } else Text(text = "Register")
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EmailInputComponent(emailFieldState: EmailFieldState) {
+    OutlinedTextField(value = emailFieldState.text, onValueChange = {
+        emailFieldState.text = it
+    }, colors = TextFieldDefaults.outlinedTextFieldColors(
+        unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
+    ), label = {
+        Text(text = "Email")
+    })
+    emailFieldState.showError()?.let {
+        Text(
+            text = it,
+            style = TextStyle(color = Color.Red),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 36.dp)
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PasswordComponent(passFieldState: PasswordFieldState) {
+    OutlinedTextField(
+        value = passFieldState.text,
+        onValueChange = {
+            passFieldState.text = it
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
+        ),
+        label = {
+            Text(text = "Password")
+        },
+    )
+    passFieldState.showError()?.let {
+        Text(
+            text = it,
+            style = TextStyle(color = Color.Red),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 36.dp)
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ConfirmPasswordComponent(passFieldState: ConfirmPasswordFieldState) {
+    OutlinedTextField(
+        value = passFieldState.text,
+        onValueChange = {
+            passFieldState.text = it
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
+        ),
+        label = {
+            Text(text = "Password")
+        },
+    )
+    passFieldState.showError()?.let {
+        Text(
+            text = it,
+            style = TextStyle(color = Color.Red),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 36.dp)
+        )
     }
 }
 
