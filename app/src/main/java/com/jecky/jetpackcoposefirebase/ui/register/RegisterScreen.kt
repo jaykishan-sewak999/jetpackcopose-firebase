@@ -2,6 +2,7 @@ package com.jecky.jetpackcoposefirebase.ui.register
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -88,7 +89,9 @@ fun RegisterScreen(loginClicked: () -> Unit, registerSuccess: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
             Text(text = "Already have account? ")
-            Text(text = "Sign In", style = TextStyle(color = Color.Blue))
+            Text(text = "Sign In", style = TextStyle(color = Color.Blue), modifier = Modifier.clickable {
+                loginClicked()
+            })
         }
     }
 }
