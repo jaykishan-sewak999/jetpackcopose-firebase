@@ -24,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -32,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.R
+import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_error
 import com.jecky.jetpackcoposefirebase.util.EmailFieldState
 import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
 
@@ -64,11 +64,7 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
             onValueChange = {
                 emailFieldState.text = it
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray,
-                focusedBorderColor = Color.Cyan,
-                errorBorderColor = Color.Red
-            ),
+
             label = {
                 Text(text = "Email")
             },
@@ -77,7 +73,7 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
 
         emailFieldState.showError()?.let {
             Text(
-                text = it, style = TextStyle(color = Color.Red),
+                text = it, style = TextStyle(color = md_theme_light_error),
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Start)
@@ -90,10 +86,11 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
             value = passwordFieldState.text, onValueChange = {
                 passwordFieldState.text = it
             }, colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Gray, focusedBorderColor = Color.Cyan
+                errorBorderColor =  md_theme_light_error,
             ), label = {
                 Text(text = "Password")
-            }, isError = passwordFieldState.shouldShoeError()
+            }, isError = passwordFieldState.shouldShoeError(),
+            enabled = true
         )
         passwordFieldState.showError()?.let {
             Row(
@@ -101,7 +98,7 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = it, style = TextStyle(color = Color.Red)
+                    text = it, style = TextStyle(/*color = Color.Red*/)
                 )
             }
         }
@@ -118,31 +115,28 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
             enabled = emailFieldState.isValid && passwordFieldState.isValid
         ) {
             if (loginViewModel.loading) {
-                CircularProgressIndicator(color = Color.Cyan)
+                CircularProgressIndicator()
             } else Text(text = "Login")
         }
         if (loginViewModel.loginState != 0) {
-            if (loginViewModel.doLogin.value == null){
-                Toast.makeText(context, "Login failed",Toast.LENGTH_LONG).show()
+            if (loginViewModel.doLogin.value == null) {
+                Toast.makeText(context, "Login failed", Toast.LENGTH_LONG).show()
                 loginViewModel.loginState = 0
-            }
-            else{
+            } else {
                 loginViewModel.loginState = 0
-                Toast.makeText(context, "Login success",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Login success", Toast.LENGTH_LONG).show()
                 signInSuccess()
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
             Text(text = "Don't have account? ")
-            Text(text = "Sign Up", style = TextStyle(color = Color.Blue),
+            Text(text = "Sign Up", style = TextStyle(/*color = Color.Blue*/),
                 modifier = Modifier.clickable {
                     registerClicked()
                 })
-
         }
     }
-
 }
 
 @Preview

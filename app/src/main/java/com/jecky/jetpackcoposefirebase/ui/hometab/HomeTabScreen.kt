@@ -37,7 +37,7 @@ fun BottomNavigationComponent(navigator: NavHostController) {
     val navBackStackEntry by navigator.currentBackStackEntryAsState()
     val currRoute = navBackStackEntry?.destination?.route
     BottomNavigation(
-        backgroundColor = colorResource(id = R.color.teal_700),
+        backgroundColor = colorResource(id = R.color.white),
         contentColor = Color.Black
     ) {
         items.forEach { item ->
