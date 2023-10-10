@@ -11,10 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthResult
 import com.jecky.jetpackcoposefirebase.repository.AuthRepository
-import com.jecky.jetpackcoposefirebase.ui.register.RegisterViewModel
 import kotlinx.coroutines.launch
 
-class LoginViewModel(val authRepository: AuthRepository):ViewModel() {
+class LoginViewModel(private val authRepository: AuthRepository):ViewModel() {
 
     var loading: Boolean by mutableStateOf(false)
     var loginState: Int by mutableIntStateOf(0)
