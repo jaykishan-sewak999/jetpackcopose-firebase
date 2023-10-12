@@ -6,15 +6,18 @@ import androidx.compose.runtime.setValue
 
 open class TextFieldState(
     val validator: (String) -> Boolean = { false },
+    val changeFocus: (Boolean) -> Boolean = { false },
     val errorMessage: () -> String = { "" }
 ) {
 
     var text: String by mutableStateOf("")
-    val hasError: Boolean by mutableStateOf(false)
+    var focus: Boolean by mutableStateOf(false)
 
     open val isValid: Boolean
         get() = validator(text)
 
+    open val hasFocus: Boolean
+        get() = changeFocus(focus)
     open fun showError(): String? {
         return if (!isValid && text.length > 2) {
             errorMessage()
@@ -23,5 +26,5 @@ open class TextFieldState(
         }
     }
 
-    open fun shouldShoeError() = isValid && hasError
+    open fun shouldShowError() = isValid
 }

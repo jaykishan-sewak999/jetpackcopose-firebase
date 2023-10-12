@@ -3,6 +3,7 @@ package com.jecky.jetpackcoposefirebase.ui.login
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,13 +18,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -58,22 +60,24 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
         val passwordFieldState by remember {
             mutableStateOf(PasswordFieldState())
         }
-
         OutlinedTextField(
             value = emailFieldState.text,
             onValueChange = {
                 emailFieldState.text = it
             },
-
             label = {
                 Text(text = "Email")
             },
-            isError = emailFieldState.shouldShoeError(),
+            isError = emailFieldState.isValid.not() && emailFieldState.hasFocus && emailFieldState.text.length > 2,
+            modifier = Modifier.focusable().onFocusChanged {
+                emailFieldState.focus = it.hasFocus
+            }
         )
 
         emailFieldState.showError()?.let {
             Text(
-                text = it, style = TextStyle(color = md_theme_light_error),
+                text = it,
+                style = TextStyle(color = md_theme_light_error),
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Start)
@@ -83,14 +87,14 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
         Spacer(modifier = Modifier.height(10.dp))
 
         OutlinedTextField(
+            modifier = Modifier.focusable().onFocusChanged {
+                passwordFieldState.focus = it.hasFocus
+            },
             value = passwordFieldState.text, onValueChange = {
                 passwordFieldState.text = it
-            }, colors = TextFieldDefaults.outlinedTextFieldColors(
-                errorBorderColor =  md_theme_light_error,
-            ), label = {
+            }, label = {
                 Text(text = "Password")
-            }, isError = passwordFieldState.shouldShoeError(),
-            enabled = true
+            }, isError =  passwordFieldState.hasFocus && passwordFieldState.isValid.not() && passwordFieldState.text.length > 2
         )
         passwordFieldState.showError()?.let {
             Row(
@@ -98,7 +102,7 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = it, style = TextStyle(/*color = Color.Red*/)
+                    text = it, style = TextStyle(color = Color.Red)
                 )
             }
         }
@@ -109,10 +113,11 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
         Button(
             onClick = {
                 loginViewModel.doLogin(emailFieldState.text, passwordFieldState.text)
-            }, modifier = Modifier
+            },
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
-            enabled = emailFieldState.isValid && passwordFieldState.isValid
+            enabled = emailFieldState.isValid && passwordFieldState.hasFocus && passwordFieldState.text.length > 2
         ) {
             if (loginViewModel.loading) {
                 CircularProgressIndicator()
@@ -131,7 +136,8 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
             Text(text = "Don't have account? ")
-            Text(text = "Sign Up", style = TextStyle(/*color = Color.Blue*/),
+            Text(text = "Sign Up",
+                style = TextStyle(/*color = Color.Blue*/),
                 modifier = Modifier.clickable {
                     registerClicked()
                 })

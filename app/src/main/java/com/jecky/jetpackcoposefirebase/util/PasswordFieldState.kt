@@ -1,7 +1,7 @@
 package com.jecky.jetpackcoposefirebase.util
 
 class PasswordFieldState :
-    TextFieldState(validator = ::isValidPassword, errorMessage = ::inValidPasswordError)
+    TextFieldState(validator = ::isValidPassword, errorMessage = ::inValidPasswordError, changeFocus = ::hasFocusPassword)
 
 class ConfirmPasswordFieldState(val passwordFieldState: PasswordFieldState) :
     TextFieldState(validator = ::isValidPassword, errorMessage = ::inValidEmailError) {
@@ -21,6 +21,10 @@ class ConfirmPasswordFieldState(val passwordFieldState: PasswordFieldState) :
     }
 }
 
+fun hasFocusPassword(focus: Boolean): Boolean{
+    return focus
+}
+
 fun isValidPassword(password: String): Boolean {
     return password.length > 6
 }
@@ -32,7 +36,6 @@ fun inValidPasswordError(): String {
 fun passwordNotSame(): String {
     return "Password and confirm password are not same"
 }
-
 
 fun isPasswordAndConfirmPasswordSame(password: String, confirmPassword: String): Boolean {
     return password == confirmPassword
