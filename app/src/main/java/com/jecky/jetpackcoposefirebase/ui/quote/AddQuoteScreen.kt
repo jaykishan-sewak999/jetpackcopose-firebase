@@ -1,8 +1,6 @@
 package com.jecky.jetpackcoposefirebase.ui.quote
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -81,22 +79,7 @@ fun CommonTextField(textData: TextData, height: Dp, label: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDropdown() {
-    /*  var expanded by remember {
-          mutableStateOf(false)
-      }
-      val items = listOf("Latest", "Philosophy", "Motivation")
-      var selectedIndex by remember {
-          mutableIntStateOf(0)
-      }
 
-      DropdownMenu(expanded = expanded, onDismissRequest = { *//*TODO*//* },
-    modifier = Modifier.fillMaxWidth()) {
-        items.forEachIndexed { index, s ->
-            DropdownMenuItem(
-                text = { Text(text = s) },
-                onClick = { *//*TODO*//* })
-        }
-    }*/
     val options = listOf("Option 1", "Option 2", "Option 3")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
@@ -107,10 +90,7 @@ fun CategoryDropdown() {
 
         modifier = Modifier
             .padding(horizontal = 15.dp)
-            .border(
-                border = BorderStroke(width = 1.dp, color = Color.Gray),
-                shape = RoundedCornerShape(5.dp)
-            ).fillMaxWidth()
+            .fillMaxWidth()
 
     ) {
         TextField(
