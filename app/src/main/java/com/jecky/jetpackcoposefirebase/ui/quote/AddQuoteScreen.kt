@@ -16,7 +16,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,7 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.model.TextData
+import com.jecky.jetpackcoposefirebase.ui.category.CategoryViewModel
+import com.jecky.jetpackcoposefirebase.ui.category.CategoryViewModelFactory
 
 @Composable
 fun AddQuoteScreen() {
@@ -50,11 +55,13 @@ fun AddQuoteScreen() {
         val quoteAuthorData by remember {
             mutableStateOf(TextData())
         }
+        val loginViewModel: CategoryViewModel = viewModel(factory = CategoryViewModelFactory())
+
         CommonTextField(quoteTextData, height = 150.dp, label = "Write quote here")
         Spacer(modifier = Modifier.height(10.dp))
         CommonTextField(quoteAuthorData, height = Dp.Unspecified, label = "Quote author name")
         Spacer(modifier = Modifier.height(15.dp))
-        CategoryDropdown()
+        CategoryDropdown(loginViewModel)
     }
 }
 
@@ -78,12 +85,16 @@ fun CommonTextField(textData: TextData, height: Dp, label: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryDropdown() {
+fun CategoryDropdown(categoryViewModel: CategoryViewModel) {
+    val creditCards by categoryViewModel.categories.observeAsState(emptyList())
 
-    val options = listOf("Option 1", "Option 2", "Option 3")
+   // val options = listOf("Option 1", "Option 2", "Option 3")
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    var selectedOptionText by remember { mutableStateOf("Select Category") }
 
+    LaunchedEffect(Unit) {
+        categoryViewModel.getCategories()
+    }
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
@@ -105,11 +116,11 @@ fun CategoryDropdown() {
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            options.forEach { selectionOption ->
+            creditCards.forEach { category ->
                 DropdownMenuItem(
-                    text = { Text(selectionOption) },
+                    text = { Text(category.name) },
                     onClick = {
-                        selectedOptionText = selectionOption
+                        selectedOptionText = category.name
                         expanded = false
                     },
                 )
