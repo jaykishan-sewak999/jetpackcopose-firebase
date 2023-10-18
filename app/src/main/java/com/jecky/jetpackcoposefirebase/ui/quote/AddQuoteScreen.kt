@@ -37,6 +37,7 @@ import com.jecky.jetpackcoposefirebase.model.TextData
 import com.jecky.jetpackcoposefirebase.ui.category.CategoryViewModel
 import com.jecky.jetpackcoposefirebase.ui.category.CategoryViewModelFactory
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddQuoteScreen() {
     Column(
@@ -57,13 +58,12 @@ fun AddQuoteScreen() {
         val quoteAuthorData by remember {
             mutableStateOf(TextData())
         }
-        val loginViewModel: CategoryViewModel = viewModel(factory = CategoryViewModelFactory())
-
+        val categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModelFactory())
         CommonTextField(quoteTextData, height = 180.dp, label = "Write quote here")
         Spacer(modifier = Modifier.height(10.dp))
-        CommonTextField(quoteAuthorData, height = Dp.Unspecified, label = "Quote author name")
+        CommonTextField(textData = quoteAuthorData, height = Dp.Unspecified, label = "Quote author name")
         Spacer(modifier = Modifier.height(15.dp))
-        CategoryDropdown(loginViewModel)
+        CategoryDropdown(categoryViewModel)
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = { /*TODO*/ },
