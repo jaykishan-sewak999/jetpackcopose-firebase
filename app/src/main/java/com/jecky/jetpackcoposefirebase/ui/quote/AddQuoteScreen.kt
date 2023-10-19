@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -34,8 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.model.TextData
+import com.jecky.jetpackcoposefirebase.repository.model.Category
+import com.jecky.jetpackcoposefirebase.repository.model.Quote
 import com.jecky.jetpackcoposefirebase.ui.category.CategoryViewModel
 import com.jecky.jetpackcoposefirebase.ui.category.CategoryViewModelFactory
+import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimary
 import com.jecky.jetpackcoposefirebase.util.AppConstants.QUOTE_LENGTH
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,8 +66,12 @@ fun AddQuoteScreen() {
         val categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModelFactory())
         CommonTextField(quoteTextData, height = 180.dp, label = "Write quote here")
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = quoteTextData.enteredText.length.toString().plus("/") .plus(QUOTE_LENGTH),
-        modifier = Modifier.align(Alignment.End).padding(horizontal = 15.dp))
+        Text(
+            text = quoteTextData.enteredText.length.toString().plus("/").plus(QUOTE_LENGTH),
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(horizontal = 15.dp)
+        )
         Spacer(modifier = Modifier.height(10.dp))
         CommonTextField(
             textData = quoteAuthorData,
@@ -72,11 +80,14 @@ fun AddQuoteScreen() {
         )
         Spacer(modifier = Modifier.height(15.dp))
         var selectedOptionText by remember { mutableStateOf("Select Category") }
-
+        var selectedCategoryId = ""
         CategoryDropdown(categoryViewModel, selectedOptionText, onCategorySelect = {
-            selectedOptionText = it
+            selectedOptionText = it.name
+            //selectedCategoryId = it
         })
         Spacer(modifier = Modifier.height(10.dp))
+        val quoteViewModel: QuoteViewModel = viewModel(factory = QuoteViewModelFactory())
+
         Button(
             onClick = { /*TODO*/ },
             modifier = Modifier
@@ -84,7 +95,17 @@ fun AddQuoteScreen() {
                 .padding(horizontal = 15.dp),
             enabled = quoteAuthorData.enteredText.isNotEmpty() && quoteTextData.enteredText.isNotEmpty() && (selectedOptionText == "Select Category").not()
         ) {
-            Text(text = "Submit")
+            quoteViewModel.addQuote(
+                Quote(
+                    quote = quoteTextData.enteredText,
+                    author = quoteAuthorData.enteredText,
+                    category = selectedCategoryId
+                )
+            )
+            if (quoteViewModel.loading) {
+                CircularProgressIndicator(color = md_theme_light_onPrimary)
+            } else
+                Text(text = "Submit")
         }
     }
 }
@@ -94,7 +115,7 @@ fun AddQuoteScreen() {
 fun CommonTextField(textData: TextData, height: Dp, label: String) {
     OutlinedTextField(
         value = textData.enteredText, onValueChange = {
-            if(it.length <= QUOTE_LENGTH)
+            if (it.length <= QUOTE_LENGTH)
                 textData.enteredText = it
         },
         modifier = Modifier
@@ -112,7 +133,7 @@ fun CommonTextField(textData: TextData, height: Dp, label: String) {
 @Composable
 fun CategoryDropdown(
     categoryViewModel: CategoryViewModel,
-    selectedOptionText: String, onCategorySelect: (String) -> Unit
+    selectedOptionText: String, onCategorySelect: (Category) -> Unit
 ) {
     val creditCards by categoryViewModel.categories.observeAsState(emptyList())
 
@@ -149,7 +170,7 @@ fun CategoryDropdown(
                 DropdownMenuItem(
                     text = { Text(category.name) },
                     onClick = {
-                        onCategorySelect(category.name)
+                        onCategorySelect(category)
                         expanded = false
                     },
                 )
