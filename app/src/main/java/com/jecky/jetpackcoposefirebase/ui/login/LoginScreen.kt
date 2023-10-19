@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_error
+import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimary
 import com.jecky.jetpackcoposefirebase.util.EmailFieldState
 import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
 
@@ -120,7 +121,7 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
             enabled = emailFieldState.isValid && passwordFieldState.hasFocus && passwordFieldState.text.length > 2
         ) {
             if (loginViewModel.loading) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = md_theme_light_onPrimary)
             } else Text(text = "Login")
         }
         if (loginViewModel.loginState != 0) {
