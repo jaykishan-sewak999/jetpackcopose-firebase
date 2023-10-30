@@ -74,38 +74,37 @@ fun AddQuoteScreen() {
         )
         Spacer(modifier = Modifier.height(10.dp))
         CommonTextField(
-            textData = quoteAuthorData,
-            height = Dp.Unspecified,
-            label = "Quote author name"
+            textData = quoteAuthorData, height = Dp.Unspecified, label = "Quote author name"
         )
         Spacer(modifier = Modifier.height(15.dp))
         var selectedOptionText by remember { mutableStateOf("Select Category") }
         var selectedCategoryId = ""
         CategoryDropdown(categoryViewModel, selectedOptionText, onCategorySelect = {
             selectedOptionText = it.name
-            //selectedCategoryId = it
+            selectedCategoryId = it.id
         })
         Spacer(modifier = Modifier.height(10.dp))
         val quoteViewModel: QuoteViewModel = viewModel(factory = QuoteViewModelFactory())
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                quoteViewModel.addQuote(
+                    Quote(
+                        quote = quoteTextData.enteredText,
+                        author = quoteAuthorData.enteredText,
+                        category = selectedCategoryId
+                    )
+                )
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp),
             enabled = quoteAuthorData.enteredText.isNotEmpty() && quoteTextData.enteredText.isNotEmpty() && (selectedOptionText == "Select Category").not()
         ) {
-            quoteViewModel.addQuote(
-                Quote(
-                    quote = quoteTextData.enteredText,
-                    author = quoteAuthorData.enteredText,
-                    category = selectedCategoryId
-                )
-            )
+
             if (quoteViewModel.loading) {
                 CircularProgressIndicator(color = md_theme_light_onPrimary)
-            } else
-                Text(text = "Submit")
+            } else Text(text = "Submit")
         }
     }
 }
@@ -113,10 +112,9 @@ fun AddQuoteScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommonTextField(textData: TextData, height: Dp, label: String) {
-    OutlinedTextField(
-        value = textData.enteredText, onValueChange = {
-            if (it.length <= QUOTE_LENGTH)
-                textData.enteredText = it
+    OutlinedTextField(value = textData.enteredText,
+        onValueChange = {
+            if (it.length <= QUOTE_LENGTH) textData.enteredText = it
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -125,15 +123,15 @@ fun CommonTextField(textData: TextData, height: Dp, label: String) {
         shape = RoundedCornerShape(10.dp),
         label = {
             Text(text = label)
-        }
-    )
+        })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDropdown(
     categoryViewModel: CategoryViewModel,
-    selectedOptionText: String, onCategorySelect: (Category) -> Unit
+    selectedOptionText: String,
+    onCategorySelect: (Category) -> Unit
 ) {
     val creditCards by categoryViewModel.categories.observeAsState(emptyList())
 
@@ -144,8 +142,7 @@ fun CategoryDropdown(
         categoryViewModel.getCategories()
     }
     ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        expanded = expanded, onExpandedChange = { expanded = !expanded },
 
         modifier = Modifier
             .padding(horizontal = 15.dp)

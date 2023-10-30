@@ -3,7 +3,6 @@ package com.jecky.jetpackcoposefirebase.ui.quote
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,17 +16,18 @@ class QuoteViewModel(
 ) : ViewModel() {
 
     var loading: Boolean by mutableStateOf(false)
-
     private var _isQuoteAdded: MutableLiveData<Boolean> = MutableLiveData()
-    var isQuoteAdded: LiveData<Boolean> = _isQuoteAdded
 
     fun addQuote(quote: Quote) {
         try {
+            loading = true
             viewModelScope.launch {
                 var response = quotesRepository.addQuote(quote)
+                loading = false
                 _isQuoteAdded.postValue(true)
             }
         } catch (exception: Exception) {
+            loading = false
             _isQuoteAdded.postValue(false)
         }
     }
