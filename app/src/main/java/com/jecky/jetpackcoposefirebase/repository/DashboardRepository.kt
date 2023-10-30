@@ -18,6 +18,7 @@ class DashboardRepository {
             for (document in userResponse.documents){
                 val category = document.toObject(Category::class.java)
                 if (category != null) {
+                    category.id = document.id
                     categoryList.add(category)
                 }
             }
