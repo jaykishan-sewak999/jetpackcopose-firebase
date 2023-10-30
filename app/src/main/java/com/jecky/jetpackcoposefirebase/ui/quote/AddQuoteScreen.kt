@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.jecky.jetpackcoposefirebase.model.TextData
 import com.jecky.jetpackcoposefirebase.repository.model.Category
 import com.jecky.jetpackcoposefirebase.repository.model.Quote
@@ -78,7 +79,9 @@ fun AddQuoteScreen() {
         )
         Spacer(modifier = Modifier.height(15.dp))
         var selectedOptionText by remember { mutableStateOf("Select Category") }
-        var selectedCategoryId = ""
+        var selectedCategoryId by remember {
+            mutableStateOf("")
+        }
         CategoryDropdown(categoryViewModel, selectedOptionText, onCategorySelect = {
             selectedOptionText = it.name
             selectedCategoryId = it.id
@@ -92,7 +95,8 @@ fun AddQuoteScreen() {
                     Quote(
                         quote = quoteTextData.enteredText,
                         author = quoteAuthorData.enteredText,
-                        category = selectedCategoryId
+                        categoryId = selectedCategoryId,
+                        userId = FirebaseAuth.getInstance().currentUser?.uid
                     )
                 )
             },
