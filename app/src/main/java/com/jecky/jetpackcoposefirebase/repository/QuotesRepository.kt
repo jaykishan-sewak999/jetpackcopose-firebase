@@ -30,7 +30,7 @@ class QuotesRepository {
                     quoteList.add(quote)
                 }
             }
-            APIResult.APISuccess(data = null)
+            APIResult.APISuccess(data = quoteList)
         } catch (exception: Exception) {
             APIResult.APIFailure(errorMessage = exception.message)
         }

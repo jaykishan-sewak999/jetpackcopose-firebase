@@ -41,8 +41,8 @@ class QuoteViewModel(
             viewModelScope.launch {
                 loading = true
                 var quoteListResponse = quotesRepository.getQuotes()
-                loading = false
                 _quotesList.postValue(quoteListResponse.data)
+                loading = false
             }
         } catch (exception: Exception) {
             loading = false
