@@ -54,14 +54,14 @@ fun HomeScreen() {
             ) {
                 items(quotesList) { quote ->
                     Text(
-                        text = quote.quote,
+                        text = quote.quote!!,
                         color = Color.Black,
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp
                     )
                     Text(
-                        text = quote.author,
+                        text = quote.author!!,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                         modifier = Modifier.align(Alignment.CenterHorizontally),

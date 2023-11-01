@@ -96,7 +96,7 @@ fun AddQuoteScreen() {
                         quote = quoteTextData.enteredText,
                         author = quoteAuthorData.enteredText,
                         categoryId = selectedCategoryId,
-                        userId = FirebaseAuth.getInstance().currentUser?.uid
+                        userId = FirebaseAuth.getInstance().currentUser?.uid!!
                     )
                 )
             },
