@@ -56,7 +56,7 @@ fun HomeScreen() {
         ) {
             items(quotesList) { quote ->
                 Card {
-                    Column(modifier = Modifier.padding(vertical = 10.dp)) {
+                    Column(modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp)) {
                         Text(
                             text = quote.quote!!,
                             color = Color.Black,
