@@ -137,7 +137,7 @@ fun CategoryDropdown(
     selectedOptionText: String,
     onCategorySelect: (Category) -> Unit
 ) {
-    val creditCards by categoryViewModel.categories.observeAsState(emptyList())
+    val categories by categoryViewModel.categories.observeAsState(emptyList())
 
     // val options = listOf("Option 1", "Option 2", "Option 3")
     var expanded by remember { mutableStateOf(false) }
@@ -167,7 +167,7 @@ fun CategoryDropdown(
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            creditCards.forEach { category ->
+            categories.forEach { category ->
                 DropdownMenuItem(
                     text = { Text(category.name) },
                     onClick = {
