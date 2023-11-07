@@ -11,7 +11,7 @@ import com.jecky.jetpackcoposefirebase.Destinations.HOME_TAB_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.PROFILE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.REGISTER_SCREEN
-import com.jecky.jetpackcoposefirebase.ui.category.CategoryScreen
+import com.jecky.jetpackcoposefirebase.ui.category.CategoryRoute
 import com.jecky.jetpackcoposefirebase.ui.home.HomeScreen
 import com.jecky.jetpackcoposefirebase.ui.hometab.HomeTabScreen
 import com.jecky.jetpackcoposefirebase.ui.login.LoginRoute
@@ -62,7 +62,9 @@ fun NavGraphDashboard(navController: NavHostController = rememberNavController()
             AddQuoteScreen()
         }
         composable(CATEGORY_SCREEN) {
-            CategoryScreen()
+            CategoryRoute(CategoryClicked = {categoryId ->
+
+            })
         }
     }
 }

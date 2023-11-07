@@ -6,4 +6,5 @@ object AppConstants {
     const val TABLE_CATEGORY = "category"
     const val TABLE_QUOTE = "quote"
     const val QUOTE_LENGTH = 200
+    const val FIELD_CATEGORY = "categoryId"
 }
