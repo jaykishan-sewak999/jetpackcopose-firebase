@@ -27,7 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimaryContainer
 
 @Composable
-fun CategoryScreen() {
+fun CategoryScreen(CategoryClicked: (String) -> Unit) {
     val categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModelFactory())
     val categories by categoryViewModel.categories.observeAsState(initial = emptyList())
 
@@ -53,7 +53,6 @@ fun CategoryScreen() {
         ) {
             items(categories) { quote ->
                 Card {
-                  //  Column(modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp)) {
                         Text(
                             text = quote.name,
                             fontWeight = FontWeight.Bold,
@@ -62,7 +61,6 @@ fun CategoryScreen() {
                             textAlign = TextAlign.Center,
                             fontSize = 18.sp
                         )
-                   // }
                 }
                 Divider(color = Color.Transparent, thickness = 10.dp)
             }

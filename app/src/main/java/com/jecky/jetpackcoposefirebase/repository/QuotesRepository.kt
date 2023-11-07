@@ -1,9 +1,11 @@
 package com.jecky.jetpackcoposefirebase.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.jecky.jetpackcoposefirebase.network.APIResult
 import com.jecky.jetpackcoposefirebase.repository.model.Quote
 import com.jecky.jetpackcoposefirebase.util.AppConstants
+import com.jecky.jetpackcoposefirebase.util.AppConstants.FIELD_CATEGORY
 import kotlinx.coroutines.tasks.await
 
 class QuotesRepository {
@@ -20,10 +22,22 @@ class QuotesRepository {
     }
 
 
-    suspend fun getQuotes(): APIResult<List<Quote>> {
+    suspend fun getQuotes(category: String?): APIResult<List<Quote>> {
         return try {
+            var apiResult: QuerySnapshot? = null
+
+
             val quoteList = arrayListOf<Quote>()
-            val apiResult = fireStore.collection(AppConstants.TABLE_QUOTE).get().await()
+            if (category != null) {
+                apiResult = fireStore.collection(AppConstants.TABLE_QUOTE)
+                    .get()
+                    .await()
+            } else {
+                apiResult = fireStore.collection(AppConstants.TABLE_QUOTE)
+                    .whereEqualTo(FIELD_CATEGORY, category)
+                    .get()
+                    .await()
+            }
             for (document in apiResult.documents) {
                 val quote = document.toObject(Quote::class.java)
                 if (quote != null) {
