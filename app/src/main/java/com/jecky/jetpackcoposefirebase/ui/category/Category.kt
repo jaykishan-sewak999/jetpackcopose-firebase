@@ -1,5 +1,6 @@
 package com.jecky.jetpackcoposefirebase.ui.category
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,7 +53,9 @@ fun CategoryScreen(CategoryClicked: (String) -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(categories) { quote ->
-                Card {
+                Card(modifier = Modifier.clickable {
+                    CategoryClicked(quote.id)
+                }) {
                         Text(
                             text = quote.name,
                             fontWeight = FontWeight.Bold,
