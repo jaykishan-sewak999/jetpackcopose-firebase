@@ -28,13 +28,13 @@ class QuotesRepository {
 
 
             val quoteList = arrayListOf<Quote>()
-            if (category != null) {
-                apiResult = fireStore.collection(AppConstants.TABLE_QUOTE)
+            apiResult = if (category != null) {
+                fireStore.collection(AppConstants.TABLE_QUOTE)
+                    .whereEqualTo(FIELD_CATEGORY, category)
                     .get()
                     .await()
             } else {
-                apiResult = fireStore.collection(AppConstants.TABLE_QUOTE)
-                    .whereEqualTo(FIELD_CATEGORY, category)
+                fireStore.collection(AppConstants.TABLE_QUOTE)
                     .get()
                     .await()
             }
