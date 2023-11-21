@@ -36,11 +36,11 @@ class QuoteViewModel(
         }
     }
 
-    fun getQuotes() {
+    fun getQuotes(category: String?) {
         try {
             viewModelScope.launch {
                 loading = true
-                var quoteListResponse = quotesRepository.getQuotes(null)
+                var quoteListResponse = quotesRepository.getQuotes(category)
                 _quotesList.postValue(quoteListResponse.data)
                 loading = false
             }
