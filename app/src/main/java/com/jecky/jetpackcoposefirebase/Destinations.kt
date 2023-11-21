@@ -22,7 +22,7 @@ object Destinations {
     const val LOGIN_SCREEN = "login"
     const val REGISTER_SCREEN = "register"
     const val HOME_TAB_SCREEN = "home_tab"
-    const val HOME_SCREEN = "home"
+    const val HOME_SCREEN = "home/{category}"
     const val PROFILE_SCREEN = "profile"
     const val CATEGORY_SCREEN = "category"
 }
@@ -55,15 +55,17 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
 fun NavGraphDashboard(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = HOME_SCREEN) {
         composable(HOME_SCREEN) {
-            HomeScreen()
+            val category = it.arguments?.getString("category")
+
+            HomeScreen(category)
         }
         composable(PROFILE_SCREEN) {
-           // ProfileScreen()
+            // ProfileScreen()
             AddQuoteScreen()
         }
         composable(CATEGORY_SCREEN) {
-            CategoryRoute(CategoryClicked = {categoryId ->
-
+            CategoryRoute(CategoryClicked = { categoryId ->
+                navController.navigate("$HOME_SCREEN/$categoryId")
             })
         }
     }

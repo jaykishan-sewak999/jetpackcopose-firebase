@@ -36,7 +36,7 @@ class QuoteViewModel(
         }
     }
 
-    fun getQuotes() {
+    fun getQuotes(category: String?) {
         try {
             viewModelScope.launch {
                 loading = true
