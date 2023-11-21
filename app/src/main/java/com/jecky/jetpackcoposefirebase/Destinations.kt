@@ -65,7 +65,7 @@ fun NavGraphDashboard(navController: NavHostController = rememberNavController()
         }
         composable(CATEGORY_SCREEN) {
             CategoryRoute(CategoryClicked = { categoryId ->
-                navController.navigate("$HOME_SCREEN/$categoryId")
+                navController.navigate("home/$categoryId")
             })
         }
     }
