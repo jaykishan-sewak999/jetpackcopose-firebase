@@ -55,27 +55,39 @@ fun HomeScreen(category: String?) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(quotesList) { quote ->
-                Card {
-                    Column(modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp)) {
-                        Text(
-                            text = quote.quote!!,
-                            color = Color.Black,
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            textAlign = TextAlign.Center,
-                            fontSize = 20.sp
-                        )
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text(
-                            text = quote.author!!,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            textAlign = TextAlign.Center,
-                            fontSize = 20.sp
-                        )
-                    }
+                if(quotesList.isEmpty()){
+                    Text(
+                        text = "No data found",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp
+                    )
+
                 }
-                Divider(color = Color.Transparent, thickness = 10.dp)
+                else{
+                    Card {
+                        Column(modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp)) {
+                            Text(
+                                text = quote.quote!!,
+                                color = Color.Black,
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                textAlign = TextAlign.Center,
+                                fontSize = 20.sp
+                            )
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Text(
+                                text = quote.author!!,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black,
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                textAlign = TextAlign.Center,
+                                fontSize = 20.sp
+                            )
+                        }
+                    }
+                    Divider(color = Color.Transparent, thickness = 10.dp)
+                }
             }
         }
     }

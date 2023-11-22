@@ -40,7 +40,7 @@ class QuoteViewModel(
         try {
             viewModelScope.launch {
                 loading = true
-                var quoteListResponse = quotesRepository.getQuotes(category)
+                val quoteListResponse = quotesRepository.getQuotes(category)
                 _quotesList.postValue(quoteListResponse.data)
                 loading = false
             }
@@ -48,10 +48,7 @@ class QuoteViewModel(
             loading = false
         }
     }
-
-
 }
-
 
 class QuoteViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
