@@ -47,25 +47,28 @@ fun HomeScreen(category: String?) {
             CircularProgressIndicator(color = md_theme_light_onPrimaryContainer)
         }
     } else {
+        if (quotesList.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No data found",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(quotesList) { quote ->
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(quotesList) { quote ->
-                if(quotesList.isEmpty()){
-                    Text(
-                        text = "No data found",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        textAlign = TextAlign.Center,
-                        fontSize = 20.sp
-                    )
-
-                }
-                else{
                     Card {
                         Column(modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp)) {
                             Text(
