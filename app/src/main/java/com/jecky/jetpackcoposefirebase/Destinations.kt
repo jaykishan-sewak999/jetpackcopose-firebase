@@ -56,7 +56,6 @@ fun NavGraphDashboard(navController: NavHostController = rememberNavController()
     NavHost(navController = navController, startDestination = HOME_SCREEN) {
         composable(HOME_SCREEN) {
             val category = it.arguments?.getString("category")
-
             HomeScreen(category)
         }
         composable(PROFILE_SCREEN) {
