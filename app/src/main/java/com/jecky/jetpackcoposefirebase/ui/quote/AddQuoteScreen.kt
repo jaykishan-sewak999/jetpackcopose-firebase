@@ -55,7 +55,7 @@ fun AddQuoteScreen() {
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "Add Your Quote",
-            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.W700)
+            style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.W700)
         )
         Spacer(modifier = Modifier.height(20.dp))
         val quoteTextData by remember {
