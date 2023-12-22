@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_error
@@ -56,7 +57,9 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
                 .height(100.dp)
                 .width(100.dp)
         )
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(15.dp))
+        Text(text = "Login", style = TextStyle(fontSize = 22.sp))
+        Spacer(modifier = Modifier.height(15.dp))
         val emailFieldState by remember { mutableStateOf(EmailFieldState()) }
         val passwordFieldState by remember {
             mutableStateOf(PasswordFieldState())
@@ -70,9 +73,11 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
                 Text(text = "Email")
             },
             isError = emailFieldState.isValid.not() && emailFieldState.hasFocus && emailFieldState.text.length > 2,
-            modifier = Modifier.focusable().onFocusChanged {
-                emailFieldState.focus = it.hasFocus
-            }
+            modifier = Modifier
+                .focusable()
+                .onFocusChanged {
+                    emailFieldState.focus = it.hasFocus
+                }
         )
 
         emailFieldState.showError()?.let {
@@ -88,9 +93,11 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
         Spacer(modifier = Modifier.height(10.dp))
 
         OutlinedTextField(
-            modifier = Modifier.focusable().onFocusChanged {
-                passwordFieldState.focus = it.hasFocus
-            },
+            modifier = Modifier
+                .focusable()
+                .onFocusChanged {
+                    passwordFieldState.focus = it.hasFocus
+                },
             value = passwordFieldState.text, onValueChange = {
                 passwordFieldState.text = it
             }, label = {
