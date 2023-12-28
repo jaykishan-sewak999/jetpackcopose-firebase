@@ -43,6 +43,7 @@ import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onSecondary
 import com.jecky.jetpackcoposefirebase.ui.theme.purple_profile
 import com.jecky.jetpackcoposefirebase.util.AppConstants.ADD_QUOTE_ID
+import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_QUOTE_ID
 
 @Composable
 fun ProfileScreen(onItemClicked: (Int) -> Unit) {
@@ -140,7 +141,7 @@ fun ProfileScreen(onItemClicked: (Int) -> Unit) {
                     icon = Icons.Outlined.List,
                     title = "My Quote",
                     onClick = {
-
+                        onItemClicked(MY_QUOTE_ID)
                     })
                 Spacer(modifier = Modifier.height(5.dp))
                 Divider()

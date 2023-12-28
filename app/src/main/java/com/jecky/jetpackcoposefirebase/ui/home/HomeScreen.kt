@@ -31,13 +31,18 @@ import com.jecky.jetpackcoposefirebase.ui.quote.QuoteViewModelFactory
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimaryContainer
 
 @Composable
-fun HomeScreen(category: String?) {
+fun HomeScreen(category: String?, fetchMyQuotes: Boolean?= true) {
     val quoteViewModel: QuoteViewModel = viewModel(factory = QuoteViewModelFactory())
 
     val quotesList by quoteViewModel.quoteList.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
-        quoteViewModel.getQuotes(category)
+        if(fetchMyQuotes == true){
+            quoteViewModel.getMyQuotes()
+        }else{
+            quoteViewModel.getQuotes(category)
+        }
+
     }
     if (quoteViewModel.loading) {
         Box(
