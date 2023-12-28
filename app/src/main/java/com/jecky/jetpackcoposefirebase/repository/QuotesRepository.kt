@@ -1,11 +1,13 @@
 package com.jecky.jetpackcoposefirebase.repository
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.jecky.jetpackcoposefirebase.network.APIResult
 import com.jecky.jetpackcoposefirebase.repository.model.Quote
 import com.jecky.jetpackcoposefirebase.util.AppConstants
 import com.jecky.jetpackcoposefirebase.util.AppConstants.FIELD_CATEGORY
+import com.jecky.jetpackcoposefirebase.util.AppConstants.FIELD_USER_ID
 import kotlinx.coroutines.tasks.await
 
 class QuotesRepository {
@@ -42,6 +44,34 @@ class QuotesRepository {
                 val quote = document.toObject(Quote::class.java)
                 if (quote != null) {
                     quoteList.add(quote)
+                }
+            }
+            APIResult.APISuccess(data = quoteList)
+        } catch (exception: Exception) {
+            APIResult.APIFailure(errorMessage = exception.message)
+        }
+    }
+
+    suspend fun getMyQuotes(): APIResult<List<Quote>> {
+        return try {
+            var apiResult: QuerySnapshot? = null
+
+
+            val quoteList = arrayListOf<Quote>()
+            apiResult =
+                fireStore.collection(AppConstants.TABLE_QUOTE)
+                    .whereEqualTo(FIELD_USER_ID,
+                        FirebaseAuth.getInstance().currentUser?.uid
+                    )
+                    .get()
+                    .await()
+
+            if (apiResult != null) {
+                for (document in apiResult.documents) {
+                    val quote = document.toObject(Quote::class.java)
+                    if (quote != null) {
+                        quoteList.add(quote)
+                    }
                 }
             }
             APIResult.APISuccess(data = quoteList)

@@ -48,6 +48,19 @@ class QuoteViewModel(
             loading = false
         }
     }
+
+    fun getMyQuotes() {
+        try {
+            viewModelScope.launch {
+                loading = true
+                val quoteListResponse = quotesRepository.getMyQuotes()
+                _quotesList.postValue(quoteListResponse.data)
+                loading = false
+            }
+        } catch (exception: Exception) {
+            loading = false
+        }
+    }
 }
 
 class QuoteViewModelFactory : ViewModelProvider.Factory {
