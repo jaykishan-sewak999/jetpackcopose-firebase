@@ -13,17 +13,16 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.jecky.jetpackcoposefirebase.NavGraphDashboard
+import com.jecky.jetpackcoposefirebase.NavGraph
 import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.repository.model.BottomNavigationItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTabScreen() {
-    val navController = rememberNavController()
+fun HomeTabScreen(navController: NavHostController) {
+    //val navController = rememberNavController()
     Scaffold(bottomBar = { BottomNavigationComponent(navigator = navController) }) {
-        NavGraphDashboard(navController = navController)
+        NavGraph(navController = navController, isSplash = false)
     }
 }
 
