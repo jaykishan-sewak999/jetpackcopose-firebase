@@ -8,13 +8,11 @@ import androidx.navigation.compose.rememberNavController
 import com.jecky.jetpackcoposefirebase.Destinations.ADD_QUOTE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.CATEGORY_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.HOME_SCREEN
-import com.jecky.jetpackcoposefirebase.Destinations.HOME_TAB_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.PROFILE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.REGISTER_SCREEN
 import com.jecky.jetpackcoposefirebase.ui.category.CategoryRoute
 import com.jecky.jetpackcoposefirebase.ui.home.HomeScreen
-import com.jecky.jetpackcoposefirebase.ui.hometab.HomeTabScreen
 import com.jecky.jetpackcoposefirebase.ui.login.LoginRoute
 import com.jecky.jetpackcoposefirebase.ui.profile.ProfileScreen
 import com.jecky.jetpackcoposefirebase.ui.quote.AddQuoteScreen
@@ -34,11 +32,11 @@ object Destinations {
 }
 
 @Composable
-fun NavGraph(navController: NavHostController = rememberNavController()) {
-    NavHost(navController = navController, startDestination = LOGIN_SCREEN) {
+fun NavGraph(navController: NavHostController, isSplash: Boolean) {
+    NavHost(navController = navController, startDestination = if (isSplash){LOGIN_SCREEN} else {HOME_SCREEN}) {
         composable(LOGIN_SCREEN) {
             LoginRoute(signInSuccess = {
-                navController.navigate(HOME_TAB_SCREEN)
+                navController.navigate(HOME_SCREEN)
 
             }, registerClicked = {
                 navController.navigate(REGISTER_SCREEN)
@@ -46,13 +44,35 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
         }
         composable(REGISTER_SCREEN) {
             RegisterRoute(registerSuccess = {
-                navController.navigate(HOME_TAB_SCREEN)
+                navController.navigate(HOME_SCREEN)
             }, loginClicked = {
                 navController.navigate(LOGIN_SCREEN)
             })
         }
-        composable(HOME_TAB_SCREEN) {
-            HomeTabScreen()
+   /*     composable(HOME_TAB_SCREEN) {
+            HomeTabScreen(navController)
+        }*/
+        composable(HOME_SCREEN) {
+            val category = it.arguments?.getString("category")
+            val fetchMyQuotes = it.arguments?.getString("fetchMyQuotes")
+            HomeScreen(category,fetchMyQuotes?.toBoolean())
+        }
+        composable(PROFILE_SCREEN) {
+            ProfileScreen(onItemClicked = {
+                when (it) {
+                    MY_QUOTE_ID -> navController.navigate("home/null/true")
+                    ADD_QUOTE_ID -> navController.navigate(ADD_QUOTE_SCREEN)
+                }
+            })
+            //AddQuoteScreen()
+        }
+        composable(CATEGORY_SCREEN) {
+            CategoryRoute(CategoryClicked = { categoryId ->
+                navController.navigate("home/$categoryId/false")
+            })
+        }
+        composable(ADD_QUOTE_SCREEN) {
+            AddQuoteScreen()
         }
     }
 }
