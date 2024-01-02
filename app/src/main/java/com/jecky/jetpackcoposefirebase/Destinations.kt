@@ -36,7 +36,11 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
     NavHost(navController = navController, startDestination = if (isSplash){LOGIN_SCREEN} else {HOME_SCREEN}) {
         composable(LOGIN_SCREEN) {
             LoginRoute(signInSuccess = {
-                navController.navigate(HOME_SCREEN)
+                navController.navigate(HOME_SCREEN){
+                    popUpTo(LOGIN_SCREEN) {
+                        inclusive = true
+                    }
+                }
 
             }, registerClicked = {
                 navController.navigate(REGISTER_SCREEN)
@@ -44,7 +48,11 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
         }
         composable(REGISTER_SCREEN) {
             RegisterRoute(registerSuccess = {
-                navController.navigate(HOME_SCREEN)
+                navController.navigate(HOME_SCREEN){
+                    popUpTo(LOGIN_SCREEN) {
+                        inclusive = true
+                    }
+                }
             }, loginClicked = {
                 navController.navigate(LOGIN_SCREEN)
             })
