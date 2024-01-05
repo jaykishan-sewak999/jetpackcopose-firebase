@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.jecky.jetpackcoposefirebase.Destinations.ADD_QUOTE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.CATEGORY_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.HOME_SCREEN
@@ -24,7 +23,7 @@ object Destinations {
     const val LOGIN_SCREEN = "login"
     const val REGISTER_SCREEN = "register"
     const val HOME_TAB_SCREEN = "home_tab"
-    const val HOME_SCREEN = "home/{category}/{fetchMyQuotes}"
+    const val HOME_SCREEN = "home"
     const val PROFILE_SCREEN = "profile"
     const val CATEGORY_SCREEN = "category"
     const val ADD_QUOTE_SCREEN = "add_quote"
@@ -33,7 +32,7 @@ object Destinations {
 
 @Composable
 fun NavGraph(navController: NavHostController, isSplash: Boolean) {
-    NavHost(navController = navController, startDestination = if (isSplash){LOGIN_SCREEN} else {HOME_SCREEN}) {
+    NavHost(navController = navController, startDestination = if (isSplash){LOGIN_SCREEN} else {"home/null/false"}) {
         composable(LOGIN_SCREEN) {
             LoginRoute(signInSuccess = {
                 navController.navigate(HOME_SCREEN){
@@ -57,9 +56,6 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
                 navController.navigate(LOGIN_SCREEN)
             })
         }
-   /*     composable(HOME_TAB_SCREEN) {
-            HomeTabScreen(navController)
-        }*/
         composable(HOME_SCREEN) {
             val category = it.arguments?.getString("category")
             val fetchMyQuotes = it.arguments?.getString("fetchMyQuotes")
@@ -72,35 +68,6 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
                     ADD_QUOTE_ID -> navController.navigate(ADD_QUOTE_SCREEN)
                 }
             })
-            //AddQuoteScreen()
-        }
-        composable(CATEGORY_SCREEN) {
-            CategoryRoute(CategoryClicked = { categoryId ->
-                navController.navigate("home/$categoryId/false")
-            })
-        }
-        composable(ADD_QUOTE_SCREEN) {
-            AddQuoteScreen()
-        }
-    }
-}
-
-@Composable
-fun NavGraphDashboard(navController: NavHostController = rememberNavController()) {
-    NavHost(navController = navController, startDestination = HOME_SCREEN) {
-        composable(HOME_SCREEN) {
-            val category = it.arguments?.getString("category")
-            val fetchMyQuotes = it.arguments?.getString("fetchMyQuotes")
-            HomeScreen(category,fetchMyQuotes?.toBoolean())
-        }
-        composable(PROFILE_SCREEN) {
-            ProfileScreen(onItemClicked = {
-                when (it) {
-                    MY_QUOTE_ID -> navController.navigate("home/null/true")
-                    ADD_QUOTE_ID -> navController.navigate(ADD_QUOTE_SCREEN)
-                }
-            })
-            //AddQuoteScreen()
         }
         composable(CATEGORY_SCREEN) {
             CategoryRoute(CategoryClicked = { categoryId ->
