@@ -8,8 +8,14 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
@@ -27,18 +33,30 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
                 val showBottomBar = navController
-                    .currentBackStackEntryAsState().value?.destination?.route  != LOGIN_SCREEN
-                println("==="+showBottomBar)
-                AnimatedVisibility(
-                    visible = showBottomBar,
-                    enter = fadeIn() + scaleIn(),
-                    exit = fadeOut() + scaleOut(),
+                    .currentBackStackEntryAsState().value?.destination?.route != LOGIN_SCREEN
+                println("===" + showBottomBar)
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding()
+                        .navigationBarsPadding(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    Scaffold(bottomBar = { BottomNavigationComponent(navigator = navController) }) {
-
+                    Scaffold(bottomBar = {
+                        AnimatedVisibility(
+                            visible = showBottomBar,
+                            enter = fadeIn() + scaleIn(),
+                            exit = fadeOut() + scaleOut(),
+                        ) {
+                            BottomNavigationComponent(navigator = navController)
+                        }
+                    }) {
+                        NavGraph(navController = navController, isSplash = true)
                     }
+
+
                 }
-                NavGraph(navController = navController, isSplash = true)
+
             }
         }
     }
