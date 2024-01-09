@@ -30,7 +30,7 @@ class QuotesRepository {
 
 
             val quoteList = arrayListOf<Quote>()
-            apiResult = if (category != null) {
+            apiResult = if (category != "{category}") {
                 fireStore.collection(AppConstants.TABLE_QUOTE)
                     .whereEqualTo(FIELD_CATEGORY, category)
                     .get()

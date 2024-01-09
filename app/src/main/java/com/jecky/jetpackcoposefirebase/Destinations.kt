@@ -23,7 +23,7 @@ object Destinations {
     const val LOGIN_SCREEN = "login"
     const val REGISTER_SCREEN = "register"
     const val HOME_TAB_SCREEN = "home_tab"
-    const val HOME_SCREEN = "home"
+    const val HOME_SCREEN = "home/{category}/{fetchMyQuotes}"
     const val PROFILE_SCREEN = "profile"
     const val CATEGORY_SCREEN = "category"
     const val ADD_QUOTE_SCREEN = "add_quote"
