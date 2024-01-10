@@ -18,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.jecky.jetpackcoposefirebase.Destinations.ADD_QUOTE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
 import com.jecky.jetpackcoposefirebase.ui.hometab.BottomNavigationComponent
 import com.jecky.jetpackcoposefirebase.ui.theme.JetpackCoposeFirebaseTheme
@@ -33,8 +34,9 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
                 val showBottomBar = navController
-                    .currentBackStackEntryAsState().value?.destination?.route != LOGIN_SCREEN
-                println("===" + showBottomBar)
+                    .currentBackStackEntryAsState().value?.destination?.route != LOGIN_SCREEN && navController
+                    .currentBackStackEntryAsState().value?.destination?.route != ADD_QUOTE_SCREEN
+
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
