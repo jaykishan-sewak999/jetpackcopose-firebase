@@ -27,7 +27,6 @@ object Destinations {
     const val PROFILE_SCREEN = "profile"
     const val CATEGORY_SCREEN = "category"
     const val ADD_QUOTE_SCREEN = "add_quote"
-
 }
 
 @Composable
@@ -40,7 +39,6 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
                         inclusive = true
                     }
                 }
-
             }, registerClicked = {
                 navController.navigate(REGISTER_SCREEN)
             })
@@ -75,7 +73,9 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
             })
         }
         composable(ADD_QUOTE_SCREEN) {
-            AddQuoteScreen()
+            AddQuoteScreen(onBackPress = {
+                navController.popBackStack()
+            })
         }
     }
 }

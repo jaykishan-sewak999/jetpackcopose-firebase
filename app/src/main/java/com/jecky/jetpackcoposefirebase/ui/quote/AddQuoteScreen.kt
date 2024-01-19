@@ -1,5 +1,10 @@
 package com.jecky.jetpackcoposefirebase.ui.quote
 
+import android.content.Context
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,15 +29,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -48,19 +56,20 @@ import com.jecky.jetpackcoposefirebase.util.AppConstants.QUOTE_LENGTH
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddQuoteScreen() {
+fun AddQuoteScreen(onBackPress:  () -> Unit) {
+    val context = LocalContext.current
+    val onBack = { onBackPress() }
 
+    BackPressHandler(onBackPressed = onBack)
 
     Scaffold(
         topBar = {
             TopAppBar(
-
                 title = {
                     Text("My App")
                 },
-
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back action here */ }) {
+                    IconButton(onClick = { onBack() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -73,7 +82,8 @@ fun AddQuoteScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White).padding(it),
+                .background(color = Color.White)
+                .padding(it),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(10.dp))
@@ -83,7 +93,8 @@ fun AddQuoteScreen() {
             val quoteAuthorData by remember {
                 mutableStateOf(TextData())
             }
-            val categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModelFactory())
+            val categoryViewModel: CategoryViewModel =
+                viewModel(factory = CategoryViewModelFactory())
             CommonTextField(quoteTextData, height = 180.dp, label = "Write quote here")
             Spacer(modifier = Modifier.height(10.dp))
             Text(
@@ -130,10 +141,36 @@ fun AddQuoteScreen() {
                 } else Text(text = "Submit")
             }
         }
+    }
+}
 
+@Composable
+fun BackPressHandler(
+    backPressedDispatcher: OnBackPressedDispatcher? =
+        LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher,
+    onBackPressed: () -> Unit
+) {
+    val currentOnBackPressed by rememberUpdatedState(newValue = onBackPressed)
+
+    val backCallback = remember {
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                currentOnBackPressed()
+            }
+        }
     }
 
+    DisposableEffect(key1 = backPressedDispatcher) {
+        backPressedDispatcher?.addCallback(backCallback)
 
+        onDispose {
+            backCallback.remove()
+        }
+    }
+}
+
+fun displayToast(context: Context) {
+    Toast.makeText(context, "Back press intercepted", Toast.LENGTH_SHORT).show()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -147,7 +184,7 @@ fun CommonTextField(textData: TextData, height: Dp, label: String) {
             .fillMaxWidth()
             .height(height)
             .padding(horizontal = 20.dp),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(10.dp),/* Handle back action here */
         label = {
             Text(text = label)
         })
@@ -206,6 +243,8 @@ fun CategoryDropdown(
 @Preview
 @Composable
 fun PreviewAddQuoteScreen() {
-    AddQuoteScreen()
+    AddQuoteScreen(onBackPress = {
+
+    })
 }
 
