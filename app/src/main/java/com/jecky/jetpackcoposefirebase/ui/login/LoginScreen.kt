@@ -79,7 +79,6 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
                     emailFieldState.focus = it.hasFocus
                 }
         )
-
         emailFieldState.showError()?.let {
             Text(
                 text = it,
@@ -98,11 +97,14 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
                 .onFocusChanged {
                     passwordFieldState.focus = it.hasFocus
                 },
-            value = passwordFieldState.text, onValueChange = {
+            value = passwordFieldState.text,
+            onValueChange = {
                 passwordFieldState.text = it
-            }, label = {
+            },
+            label = {
                 Text(text = "Password")
-            }, isError =  passwordFieldState.hasFocus && passwordFieldState.isValid.not() && passwordFieldState.text.length > 2
+            },
+            isError = passwordFieldState.hasFocus && passwordFieldState.isValid.not() && passwordFieldState.text.length > 2
         )
         passwordFieldState.showError()?.let {
             Row(
@@ -116,7 +118,6 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
         }
         val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
         val context = LocalContext.current
-
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
