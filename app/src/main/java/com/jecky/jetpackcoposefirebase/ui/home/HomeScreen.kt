@@ -42,7 +42,6 @@ fun HomeScreen(category: String?, fetchMyQuotes: Boolean?= true) {
         }else{
             quoteViewModel.getQuotes(category)
         }
-
     }
     if (quoteViewModel.loading) {
         Box(

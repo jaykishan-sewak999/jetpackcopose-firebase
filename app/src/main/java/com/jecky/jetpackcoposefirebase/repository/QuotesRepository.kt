@@ -23,12 +23,9 @@ class QuotesRepository {
         }
     }
 
-
     suspend fun getQuotes(category: String?): APIResult<List<Quote>> {
         return try {
             var apiResult: QuerySnapshot? = null
-
-
             val quoteList = arrayListOf<Quote>()
             apiResult = if (category != "{category}") {
                 fireStore.collection(AppConstants.TABLE_QUOTE)
@@ -60,7 +57,8 @@ class QuotesRepository {
             val quoteList = arrayListOf<Quote>()
             apiResult =
                 fireStore.collection(AppConstants.TABLE_QUOTE)
-                    .whereEqualTo(FIELD_USER_ID,
+                    .whereEqualTo(
+                        FIELD_USER_ID,
                         FirebaseAuth.getInstance().currentUser?.uid
                     )
                     .get()
