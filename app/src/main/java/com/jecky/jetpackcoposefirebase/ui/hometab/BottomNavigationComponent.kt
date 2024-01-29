@@ -31,9 +31,10 @@ fun BottomNavigationComponent(navigator: NavHostController) {
             BottomNavigationItem(selected = currRoute == item.route, onClick = {
                 navigator.navigate(item.route) {
                     navigator.graph.startDestinationRoute?.let { screen_route ->
-                        popUpTo(screen_route) {
-                            saveState = true
-                        }
+                       /* popUpTo(screen_route) {
+                            saveState = false
+                        }*/
+                        popUpTo(0)
                     }
                     launchSingleTop = true
                     restoreState = true

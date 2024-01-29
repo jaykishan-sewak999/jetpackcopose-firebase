@@ -17,6 +17,7 @@ import com.jecky.jetpackcoposefirebase.ui.profile.ProfileScreen
 import com.jecky.jetpackcoposefirebase.ui.quote.AddQuoteScreen
 import com.jecky.jetpackcoposefirebase.ui.register.RegisterRoute
 import com.jecky.jetpackcoposefirebase.util.AppConstants.ADD_QUOTE_ID
+import com.jecky.jetpackcoposefirebase.util.AppConstants.LOG_OUT_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_QUOTE_ID
 
 object Destinations {
@@ -64,6 +65,9 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
                 when (it) {
                     MY_QUOTE_ID -> navController.navigate("home/null/true")
                     ADD_QUOTE_ID -> navController.navigate(ADD_QUOTE_SCREEN)
+                    LOG_OUT_ID ->  navController.navigate(LOGIN_SCREEN){
+                        popUpTo(0)
+                    }
                 }
             })
         }

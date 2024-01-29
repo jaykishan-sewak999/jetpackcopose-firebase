@@ -42,6 +42,7 @@ import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onSecondary
 import com.jecky.jetpackcoposefirebase.ui.theme.purple_profile
 import com.jecky.jetpackcoposefirebase.util.AppConstants.ADD_QUOTE_ID
+import com.jecky.jetpackcoposefirebase.util.AppConstants.LOG_OUT_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_QUOTE_ID
 
 @Composable
@@ -158,7 +159,7 @@ fun ProfileScreen(onItemClicked: (Int) -> Unit) {
                     icon = Icons.Outlined.ExitToApp,
                     title = "Logout",
                     onClick = {
-
+                        onItemClicked(LOG_OUT_ID)
                     })
 
             }
