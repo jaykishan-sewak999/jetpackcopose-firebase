@@ -15,13 +15,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jecky.jetpackcoposefirebase.Destinations.ADD_QUOTE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
 import com.jecky.jetpackcoposefirebase.ui.hometab.BottomNavigationComponent
 import com.jecky.jetpackcoposefirebase.ui.theme.JetpackCoposeFirebaseTheme
+import com.jecky.jetpackcoposefirebase.util.DataStoreManager
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -36,6 +39,8 @@ class MainActivity : ComponentActivity() {
                 val showBottomBar = navController
                     .currentBackStackEntryAsState().value?.destination?.route != LOGIN_SCREEN && navController
                     .currentBackStackEntryAsState().value?.destination?.route != ADD_QUOTE_SCREEN
+                val dataStoreManager = DataStoreManager(LocalContext.current)
+                val fId = dataStoreManager.getDataFromStore().collectAsState(initial = "").value
 
                 Surface(
                     modifier = Modifier
@@ -53,12 +58,9 @@ class MainActivity : ComponentActivity() {
                             BottomNavigationComponent(navigator = navController)
                         }
                     }) {
-                        NavGraph(navController = navController, isSplash = true)
+                        NavGraph(navController = navController, isSplash = fId.isEmpty().not())
                     }
-
-
                 }
-
             }
         }
     }
