@@ -1,5 +1,6 @@
 package com.jecky.jetpackcoposefirebase.ui.login
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -33,12 +35,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.jecky.jetpackcoposefirebase.R
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_error
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimary
+import com.jecky.jetpackcoposefirebase.util.DataStoreManager
 import com.jecky.jetpackcoposefirebase.util.EmailFieldState
 import com.jecky.jetpackcoposefirebase.util.PasswordFieldState
+import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
@@ -132,14 +139,21 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
                 CircularProgressIndicator(color = md_theme_light_onPrimary)
             } else Text(text = "Login")
         }
+        val scope = rememberCoroutineScope()
+
+        val dataStoreManager = DataStoreManager(LocalContext.current)
         if (loginViewModel.loginState != 0) {
             if (loginViewModel.doLogin.value == null) {
                 Toast.makeText(context, "Login failed", Toast.LENGTH_LONG).show()
                 loginViewModel.loginState = 0
+
             } else {
                 loginViewModel.loginState = 0
                 Toast.makeText(context, "Login success", Toast.LENGTH_LONG).show()
                 signInSuccess()
+                scope.launch {
+                    dataStoreManager.saveToDataStore(Firebase.auth.currentUser?.uid!!)
+                }
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
