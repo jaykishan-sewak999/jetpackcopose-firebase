@@ -23,7 +23,6 @@ import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_QUOTE_ID
 object Destinations {
     const val LOGIN_SCREEN = "login"
     const val REGISTER_SCREEN = "register"
-    const val HOME_TAB_SCREEN = "home_tab"
     const val HOME_SCREEN = "home/{category}/{fetchMyQuotes}"
     const val PROFILE_SCREEN = "profile"
     const val CATEGORY_SCREEN = "category"
@@ -56,7 +55,7 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
             })
         }
         composable(HOME_SCREEN) {
-            val category = it.arguments?.getString("category")
+            val category = it.arguments?.getString("category") ?: "{category}"
             val fetchMyQuotes = it.arguments?.getString("fetchMyQuotes")
             HomeScreen(category,fetchMyQuotes?.toBoolean())
         }

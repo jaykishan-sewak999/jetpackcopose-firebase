@@ -140,7 +140,6 @@ fun LoginScreen(signInSuccess: () -> Unit, registerClicked: () -> Unit) {
             } else Text(text = "Login")
         }
         val scope = rememberCoroutineScope()
-
         val dataStoreManager = DataStoreManager(LocalContext.current)
         if (loginViewModel.loginState != 0) {
             if (loginViewModel.doLogin.value == null) {

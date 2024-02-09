@@ -26,11 +26,13 @@ import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +46,8 @@ import com.jecky.jetpackcoposefirebase.ui.theme.purple_profile
 import com.jecky.jetpackcoposefirebase.util.AppConstants.ADD_QUOTE_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.LOG_OUT_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_QUOTE_ID
+import com.jecky.jetpackcoposefirebase.util.DataStoreManager
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(onItemClicked: (Int) -> Unit) {
@@ -155,10 +159,17 @@ fun ProfileScreen(onItemClicked: (Int) -> Unit) {
                 Spacer(modifier = Modifier.height(5.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(5.dp))
+
+                val scope = rememberCoroutineScope()
+                val dataStoreManager = DataStoreManager(LocalContext.current)
+
                 ProfileButtonItem(
                     icon = Icons.Outlined.ExitToApp,
                     title = "Logout",
                     onClick = {
+                        scope.launch {
+                            dataStoreManager.saveToDataStore("")
+                        }
                         onItemClicked(LOG_OUT_ID)
                     })
 

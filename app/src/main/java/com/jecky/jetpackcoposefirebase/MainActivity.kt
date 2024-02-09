@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                             BottomNavigationComponent(navigator = navController)
                         }
                     }) {
-                        NavGraph(navController = navController, isSplash = fId.isEmpty().not())
+                        NavGraph(navController = navController, isSplash = fId.isEmpty())
                     }
                 }
             }
