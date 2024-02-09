@@ -40,7 +40,6 @@ class RegisterViewModel(val repository: AuthRepository, val userRepository: User
                     showLoading = false
                     _doRegister.value = null
                 }
-
                 else -> {}
             }
         }
@@ -48,7 +47,6 @@ class RegisterViewModel(val repository: AuthRepository, val userRepository: User
     }
 
     fun addUserData(email: String, userId:String){
-
         try {
             viewModelScope.launch {
                 val result = userRepository.addUserData(User(userId = userId,email))

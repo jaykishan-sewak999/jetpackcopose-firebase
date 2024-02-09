@@ -9,11 +9,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.jecky.jetpackcoposefirebase.repository.QuotesRepository
+import com.jecky.jetpackcoposefirebase.repository.UserRepository
 import com.jecky.jetpackcoposefirebase.repository.model.Quote
 import kotlinx.coroutines.launch
 
 class QuoteViewModel(
-    private val quotesRepository: QuotesRepository
+    private val quotesRepository: QuotesRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     var loading: Boolean by mutableStateOf(false)
@@ -61,13 +63,23 @@ class QuoteViewModel(
             loading = false
         }
     }
+
+    fun addQuoteToFavorite(quoteId: String?){
+        try {
+            viewModelScope.launch {
+                userRepository.addFavoriteQuote(quoteId)
+            }
+        } catch (exception: Exception){
+
+        }
+    }
 }
 
 class QuoteViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(QuoteViewModel::class.java)) {
-            return QuoteViewModel(QuotesRepository()) as T
+            return QuoteViewModel(QuotesRepository(),UserRepository()) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

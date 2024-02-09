@@ -18,4 +18,14 @@ class UserRepository {
             APIResult.APIFailure(errorMessage = e.message)
         }
     }
+
+    suspend fun addFavoriteQuote(quoteId: String?): APIResult<Boolean>{
+return try {
+    val response = fireStore.collection(AppConstants.TABLE_USER).document(quoteId!!)//TODO add logic for add favorite quote
+    APIResult.APISuccess(data = null)
+}
+catch (e: Exception){
+    APIResult.APIFailure(errorMessage = "Failed")
+}
+    }
 }
