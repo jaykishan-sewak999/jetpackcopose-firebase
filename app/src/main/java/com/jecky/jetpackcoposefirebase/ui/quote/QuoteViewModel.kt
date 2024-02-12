@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.jecky.jetpackcoposefirebase.network.APIResult
 import com.jecky.jetpackcoposefirebase.repository.QuotesRepository
 import com.jecky.jetpackcoposefirebase.repository.UserRepository
 import com.jecky.jetpackcoposefirebase.repository.model.Quote
@@ -43,7 +44,12 @@ class QuoteViewModel(
             viewModelScope.launch {
                 loading = true
                 val quoteListResponse = quotesRepository.getQuotes(category)
-                _quotesList.postValue(quoteListResponse.data)
+                if (quoteListResponse is APIResult.APISuccess){
+                    _quotesList.postValue(quoteListResponse.data)
+                }
+                else{
+                        //todo need to manage error case
+                }
                 loading = false
             }
         } catch (exception: Exception) {
@@ -64,10 +70,12 @@ class QuoteViewModel(
         }
     }
 
-    fun addQuoteToFavorite(quoteId: String?){
+    fun addQuoteToFavorite(quoteId: String){
         try {
+            val favQuotes = ArrayList<String>();
+            favQuotes.add(quoteId)
             viewModelScope.launch {
-                userRepository.addFavoriteQuote(quoteId)
+                userRepository.addFavoriteQuote(favQuotes)
             }
         } catch (exception: Exception){
 

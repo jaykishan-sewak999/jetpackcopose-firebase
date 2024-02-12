@@ -119,7 +119,7 @@ fun HomeScreen(category: String?, fetchMyQuotes: Boolean?= true) {
                                     tint = Color.Black,
                                     modifier = Modifier.size(ButtonDefaults.IconSize).clickable {
                                         isFavorite = !isFavorite
-                                        quoteViewModel.addQuoteToFavorite(quote.id)
+                                        quoteViewModel.addQuoteToFavorite(quote.id!!)
                                     }
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))

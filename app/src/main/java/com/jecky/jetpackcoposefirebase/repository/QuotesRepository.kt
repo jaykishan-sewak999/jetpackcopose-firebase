@@ -39,6 +39,7 @@ class QuotesRepository {
             }
             for (document in apiResult.documents) {
                 val quote = document.toObject(Quote::class.java)
+                quote?.id = document.id
                 if (quote != null) {
                     quoteList.add(quote)
                 }
