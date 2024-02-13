@@ -72,10 +72,18 @@ class QuoteViewModel(
 
     fun addQuoteToFavorite(quoteId: String){
         try {
-            val favQuotes = ArrayList<String>();
-            favQuotes.add(quoteId)
             viewModelScope.launch {
-                userRepository.addFavoriteQuote(favQuotes)
+                userRepository.addFavoriteQuote(quoteId)
+            }
+        } catch (exception: Exception){
+
+        }
+    }
+
+    fun removeQuoteToFavorite(quoteId: String){
+        try {
+            viewModelScope.launch {
+                userRepository.removeFavoriteQuote(quoteId)
             }
         } catch (exception: Exception){
 
