@@ -8,6 +8,8 @@ object AppConstants {
     const val QUOTE_LENGTH = 200
     const val FIELD_CATEGORY = "categoryId"
     const val FIELD_USER_ID = "userId"
+    const val FIELD_FAVORITES = "favorites"
+
 
     const val EDIT_PROFILE_ID = 3
     const val MY_QUOTE_ID = 2
