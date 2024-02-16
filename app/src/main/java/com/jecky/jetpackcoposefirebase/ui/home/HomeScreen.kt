@@ -45,15 +45,15 @@ import com.jecky.jetpackcoposefirebase.ui.quote.QuoteViewModelFactory
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimaryContainer
 
 @Composable
-fun HomeScreen(category: String?, fetchMyQuotes: Boolean?= true) {
+fun HomeScreen(category: String?, fetchMyQuotes: Boolean? = true) {
     val quoteViewModel: QuoteViewModel = viewModel(factory = QuoteViewModelFactory())
 
     val quotesList by quoteViewModel.quoteList.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
-        if(fetchMyQuotes == true){
+        if (fetchMyQuotes == true) {
             quoteViewModel.getMyQuotes()
-        }else{
+        } else {
             quoteViewModel.getQuotes(category)
         }
     }
@@ -110,22 +110,27 @@ fun HomeScreen(category: String?, fetchMyQuotes: Boolean?= true) {
                             var isFavorite by remember {
                                 mutableStateOf(false)
                             }
-                            Row(modifier = Modifier.fillMaxWidth(),
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically){
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Icon(
-                                    imageVector = if ( isFavorite)  Icons.Filled.Favorite else  Icons.Outlined.FavoriteBorder,
+                                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                                     contentDescription = "Favorite",
                                     tint = Color.Black,
-                                    modifier = Modifier.size(ButtonDefaults.IconSize).clickable {
-                                        isFavorite = !isFavorite
-                                        if(isFavorite){
-                                            quoteViewModel.addQuoteToFavorite(quote.id!!)
+                                    modifier = Modifier
+                                        .size(ButtonDefaults.IconSize)
+                                        .clickable {
+                                            isFavorite = !isFavorite
+                                            if (isFavorite) {
+                                                quoteViewModel.addQuoteToFavorite(quote.id!!)
+                                            } else {
+                                                quoteViewModel.removeQuoteToFavorite(
+                                                    quote.id!!
+                                                )
+                                            }
                                         }
-                                        else{
-                                            quoteViewModel.removeQuoteToFavorite(quote.id!!)
-                                        }
-                                    }
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Icon(

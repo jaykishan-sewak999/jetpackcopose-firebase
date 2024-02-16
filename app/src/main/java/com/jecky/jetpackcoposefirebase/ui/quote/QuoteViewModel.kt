@@ -44,11 +44,10 @@ class QuoteViewModel(
             viewModelScope.launch {
                 loading = true
                 val quoteListResponse = quotesRepository.getQuotes(category)
-                if (quoteListResponse is APIResult.APISuccess){
+                if (quoteListResponse is APIResult.APISuccess) {
                     _quotesList.postValue(quoteListResponse.data)
-                }
-                else{
-                        //todo need to manage error case
+                } else {
+                    //todo need to manage error case
                 }
                 loading = false
             }
@@ -70,22 +69,22 @@ class QuoteViewModel(
         }
     }
 
-    fun addQuoteToFavorite(quoteId: String){
+    fun addQuoteToFavorite(quoteId: String) {
         try {
             viewModelScope.launch {
                 userRepository.addFavoriteQuote(quoteId)
             }
-        } catch (exception: Exception){
+        } catch (exception: Exception) {
 
         }
     }
 
-    fun removeQuoteToFavorite(quoteId: String){
+    fun removeQuoteToFavorite(quoteId: String) {
         try {
             viewModelScope.launch {
                 userRepository.removeFavoriteQuote(quoteId)
             }
-        } catch (exception: Exception){
+        } catch (exception: Exception) {
 
         }
     }
@@ -95,7 +94,7 @@ class QuoteViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(QuoteViewModel::class.java)) {
-            return QuoteViewModel(QuotesRepository(),UserRepository()) as T
+            return QuoteViewModel(QuotesRepository(), UserRepository()) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
