@@ -16,7 +16,8 @@ class UserRepository {
     suspend fun addUserData(user: User): APIResult<User> {
         return try {
             val userResponse =
-                fireStore.collection(AppConstants.TABLE_USER).document(user.userId).set(user).await()
+                fireStore.collection(AppConstants.TABLE_USER).document(user.userId).set(user)
+                    .await()
             APIResult.APISuccess(data = user.apply { userId = user.userId })
         } catch (e: Exception) {
             APIResult.APIFailure(errorMessage = e.message)
@@ -29,10 +30,11 @@ class UserRepository {
         return try {
             val response = fireStore.collection(AppConstants.TABLE_USER)
                 .document(currentFirebaseUser?.uid!!)
-                .update(AppConstants.FIELD_FAVORITES, FieldValue.arrayUnion(quoteId)).addOnSuccessListener {
-                    Log.d("TAG", "DocumentSnapshot successfully updated!") }
-                .addOnFailureListener {
-                    e -> Log.w("TAG", "Error updating document", e) }
+                .update(AppConstants.FIELD_FAVORITES, FieldValue.arrayUnion(quoteId))
+                .addOnSuccessListener {
+                    Log.d("TAG", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
             APIResult.APISuccess(data = null)
         } catch (e: Exception) {
             APIResult.APIFailure(errorMessage = "Failed")
@@ -45,10 +47,11 @@ class UserRepository {
         return try {
             val response = fireStore.collection(AppConstants.TABLE_USER)
                 .document(currentFirebaseUser?.uid!!)
-                .update(AppConstants.FIELD_FAVORITES, FieldValue.arrayRemove(quoteId)).addOnSuccessListener {
-                    Log.d("TAG", "DocumentSnapshot successfully updated!") }
-                .addOnFailureListener {
-                        e -> Log.w("TAG", "Error updating document", e) }
+                .update(AppConstants.FIELD_FAVORITES, FieldValue.arrayRemove(quoteId))
+                .addOnSuccessListener {
+                    Log.d("TAG", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
             APIResult.APISuccess(data = null)
         } catch (e: Exception) {
             APIResult.APIFailure(errorMessage = "Failed")
