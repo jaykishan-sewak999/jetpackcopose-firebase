@@ -108,7 +108,7 @@ fun HomeScreen(category: String?, fetchMyQuotes: Boolean? = true) {
                             Divider(color = Color.Gray)
                             Spacer(modifier = Modifier.height(5.dp))
                             var isFavorite by remember {
-                                mutableStateOf(false)
+                                mutableStateOf(quote.isFavorite)
                             }
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -116,14 +116,14 @@ fun HomeScreen(category: String?, fetchMyQuotes: Boolean? = true) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                                    imageVector = if (isFavorite == true) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                                     contentDescription = "Favorite",
                                     tint = Color.Black,
                                     modifier = Modifier
                                         .size(ButtonDefaults.IconSize)
                                         .clickable {
-                                            isFavorite = !isFavorite
-                                            if (isFavorite) {
+                                            isFavorite = isFavorite?.not()
+                                            if (isFavorite == true) {
                                                 quoteViewModel.addQuoteToFavorite(quote.id!!)
                                             } else {
                                                 quoteViewModel.removeQuoteToFavorite(

@@ -1,6 +1,7 @@
 package com.jecky.jetpackcoposefirebase.repository
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.jecky.jetpackcoposefirebase.network.APIResult
@@ -12,7 +13,8 @@ import kotlinx.coroutines.tasks.await
 
 class QuotesRepository {
 
-    var fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private var fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val currentFirebaseUser = FirebaseAuth.getInstance().currentUser
 
     suspend fun addQuote(quote: Quote): APIResult<Boolean> {
         return try {
@@ -37,9 +39,16 @@ class QuotesRepository {
                     .get()
                     .await()
             }
+            var response: DocumentSnapshot? = null
+            response = fireStore.collection(AppConstants.TABLE_USER).document(currentFirebaseUser?.uid!!)
+                    .get()
+                    .await()
+
+            val favList =  response.data?.get("favorites") as ArrayList<String>
             for (document in apiResult.documents) {
                 val quote = document.toObject(Quote::class.java)
                 quote?.id = document.id
+                quote?.isFavorite = favList.contains(quote?.id)
                 if (quote != null) {
                     quoteList.add(quote)
                 }
