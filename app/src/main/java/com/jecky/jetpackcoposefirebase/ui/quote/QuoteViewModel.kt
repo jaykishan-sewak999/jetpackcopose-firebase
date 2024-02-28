@@ -25,6 +25,9 @@ class QuoteViewModel(
     private var _quotesList: MutableLiveData<List<Quote>> = MutableLiveData()
     var quoteList: LiveData<List<Quote>> = _quotesList
 
+    private var _favQuotesList: MutableLiveData<List<Quote>> = MutableLiveData()
+    var favQuotesList: LiveData<List<Quote>> = _favQuotesList
+
     fun addQuote(quote: Quote) {
         try {
             loading = true
@@ -84,10 +87,19 @@ class QuoteViewModel(
             viewModelScope.launch {
                 userRepository.removeFavoriteQuote(quoteId)
             }
-        } catch (exception: Exception) {
+        } catch (_: Exception) {
 
         }
     }
+
+    fun getMyFavoriteQuotes(){
+        try {
+            viewModelScope.launch {
+               // userRepository.
+            }
+        } catch (_: Exception){}
+    }
+    
 }
 
 class QuoteViewModelFactory : ViewModelProvider.Factory {

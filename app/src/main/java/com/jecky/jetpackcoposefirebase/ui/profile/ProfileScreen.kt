@@ -45,6 +45,7 @@ import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onSecondary
 import com.jecky.jetpackcoposefirebase.ui.theme.purple_profile
 import com.jecky.jetpackcoposefirebase.util.AppConstants.ADD_QUOTE_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.LOG_OUT_ID
+import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_FAVORITES_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_QUOTE_ID
 import com.jecky.jetpackcoposefirebase.util.DataStoreManager
 import kotlinx.coroutines.launch
@@ -159,7 +160,14 @@ fun ProfileScreen(onItemClicked: (Int) -> Unit) {
                 Spacer(modifier = Modifier.height(5.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(5.dp))
-
+                ProfileButtonItem(
+                    icon = Icons.Outlined.AccountBox,
+                    title = "My Favorites",
+                    onClick = {
+                        onItemClicked(MY_FAVORITES_ID)
+                    })
+                Spacer(modifier = Modifier.height(5.dp))
+                Divider()
                 val scope = rememberCoroutineScope()
                 val dataStoreManager = DataStoreManager(LocalContext.current)
 

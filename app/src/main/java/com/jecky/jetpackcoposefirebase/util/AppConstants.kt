@@ -14,5 +14,6 @@ object AppConstants {
     const val EDIT_PROFILE_ID = 3
     const val MY_QUOTE_ID = 2
     const val ADD_QUOTE_ID = 3
-    const val LOG_OUT_ID = 4
+    const val MY_FAVORITES_ID = 4
+    const val LOG_OUT_ID = 5
 }
