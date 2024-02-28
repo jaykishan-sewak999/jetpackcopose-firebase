@@ -8,6 +8,7 @@ import com.jecky.jetpackcoposefirebase.Destinations.ADD_QUOTE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.CATEGORY_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.HOME_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.LOGIN_SCREEN
+import com.jecky.jetpackcoposefirebase.Destinations.MY_FAVORITE_QUOTE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.PROFILE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.REGISTER_SCREEN
 import com.jecky.jetpackcoposefirebase.ui.category.CategoryRoute
@@ -18,6 +19,7 @@ import com.jecky.jetpackcoposefirebase.ui.quote.AddQuoteScreen
 import com.jecky.jetpackcoposefirebase.ui.register.RegisterRoute
 import com.jecky.jetpackcoposefirebase.util.AppConstants.ADD_QUOTE_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.LOG_OUT_ID
+import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_FAVORITES_ID
 import com.jecky.jetpackcoposefirebase.util.AppConstants.MY_QUOTE_ID
 
 object Destinations {
@@ -27,6 +29,7 @@ object Destinations {
     const val PROFILE_SCREEN = "profile"
     const val CATEGORY_SCREEN = "category"
     const val ADD_QUOTE_SCREEN = "add_quote"
+    const val MY_FAVORITE_QUOTE_SCREEN = "favorite_quote"
 }
 
 @Composable
@@ -64,6 +67,7 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
                 when (it) {
                     MY_QUOTE_ID -> navController.navigate("home/null/true")
                     ADD_QUOTE_ID -> navController.navigate(ADD_QUOTE_SCREEN)
+                    MY_FAVORITES_ID -> navController.navigate(MY_FAVORITE_QUOTE_SCREEN)
                     LOG_OUT_ID ->  navController.navigate(LOGIN_SCREEN){
                         popUpTo(0)
                     }
