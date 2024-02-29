@@ -2,6 +2,7 @@ package com.jecky.jetpackcoposefirebase.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.jecky.jetpackcoposefirebase.network.APIResult
@@ -40,11 +41,12 @@ class QuotesRepository {
                     .await()
             }
             var response: DocumentSnapshot? = null
-            response = fireStore.collection(AppConstants.TABLE_USER).document(currentFirebaseUser?.uid!!)
+            response =
+                fireStore.collection(AppConstants.TABLE_USER).document(currentFirebaseUser?.uid!!)
                     .get()
                     .await()
 
-            val favList =  response.data?.get("favorites") as ArrayList<String>
+            val favList = response.data?.get("favorites") as ArrayList<String>
             for (document in apiResult.documents) {
                 val quote = document.toObject(Quote::class.java)
                 quote?.id = document.id
@@ -62,8 +64,6 @@ class QuotesRepository {
     suspend fun getMyQuotes(): APIResult<List<Quote>> {
         return try {
             var apiResult: QuerySnapshot? = null
-
-
             val quoteList = arrayListOf<Quote>()
             apiResult =
                 fireStore.collection(AppConstants.TABLE_QUOTE)
@@ -82,6 +82,45 @@ class QuotesRepository {
                     }
                 }
             }
+            APIResult.APISuccess(data = quoteList)
+        } catch (exception: Exception) {
+            APIResult.APIFailure(errorMessage = exception.message)
+        }
+    }
+
+    suspend fun getMyFavoriteQuotes(): APIResult<List<Quote>> {
+        return try {
+            var quoteApiResult: QuerySnapshot? = null
+            val quoteList = arrayListOf<Quote>()
+
+            var favQuoteResponse: DocumentSnapshot? = null
+            favQuoteResponse =
+                fireStore.collection(AppConstants.TABLE_USER).document(currentFirebaseUser?.uid!!)
+                    .get()
+                    .await()
+
+            val favList = favQuoteResponse.data?.get("favorites") as ArrayList<String>
+
+            quoteApiResult =
+                fireStore.collection(AppConstants.TABLE_QUOTE)
+                    .whereIn(
+                        FieldPath.documentId(),
+                        favList
+                    )
+                    .get()
+                    .await()
+
+            if (quoteApiResult != null) {
+                for (document in quoteApiResult.documents) {
+                    val quote = document.toObject(Quote::class.java)
+                    quote?.id = document.id
+                    quote?.isFavorite = true
+                    if (quote != null) {
+                        quoteList.add(quote)
+                    }
+                }
+            }
+
             APIResult.APISuccess(data = quoteList)
         } catch (exception: Exception) {
             APIResult.APIFailure(errorMessage = exception.message)

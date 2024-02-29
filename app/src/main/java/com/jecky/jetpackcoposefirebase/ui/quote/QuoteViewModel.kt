@@ -72,6 +72,7 @@ class QuoteViewModel(
         }
     }
 
+
     fun addQuoteToFavorite(quoteId: String) {
         try {
             viewModelScope.launch {
@@ -92,14 +93,19 @@ class QuoteViewModel(
         }
     }
 
-    fun getMyFavoriteQuotes(){
+    fun getMyFavoriteQuotes() {
         try {
             viewModelScope.launch {
-               // userRepository.
+                loading = true
+                val quoteListResponse = quotesRepository.getMyFavoriteQuotes()
+                _quotesList.postValue(quoteListResponse.data)
+                loading = false
             }
-        } catch (_: Exception){}
+        } catch (exception: Exception) {
+            loading = false
+        }
     }
-    
+
 }
 
 class QuoteViewModelFactory : ViewModelProvider.Factory {

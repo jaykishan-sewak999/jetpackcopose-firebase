@@ -12,6 +12,7 @@ import com.jecky.jetpackcoposefirebase.Destinations.MY_FAVORITE_QUOTE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.PROFILE_SCREEN
 import com.jecky.jetpackcoposefirebase.Destinations.REGISTER_SCREEN
 import com.jecky.jetpackcoposefirebase.ui.category.CategoryRoute
+import com.jecky.jetpackcoposefirebase.ui.favorite.FavoriteQuoteScreen
 import com.jecky.jetpackcoposefirebase.ui.home.HomeScreen
 import com.jecky.jetpackcoposefirebase.ui.login.LoginRoute
 import com.jecky.jetpackcoposefirebase.ui.profile.ProfileScreen
@@ -83,6 +84,9 @@ fun NavGraph(navController: NavHostController, isSplash: Boolean) {
             AddQuoteScreen(onBackPress = {
                 navController.popBackStack()
             })
+        }
+        composable(MY_FAVORITE_QUOTE_SCREEN) {
+            FavoriteQuoteScreen()
         }
     }
 }
