@@ -1,4 +1,4 @@
-package com.jecky.jetpackcoposefirebase.ui.favorite
+package com.jecky.jetpackcoposefirebase.ui.quote
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,9 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.jecky.jetpackcoposefirebase.ui.quote.QuoteItem
-import com.jecky.jetpackcoposefirebase.ui.quote.QuoteViewModel
-import com.jecky.jetpackcoposefirebase.ui.quote.QuoteViewModelFactory
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimaryContainer
 
 @Composable
@@ -65,9 +62,9 @@ fun FavoriteQuoteScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 items(quotesList) { quote ->
-                    QuoteItem(quote, addToFav = {quoteId ->
+                    QuoteItem(quote, addToFav = { quoteId ->
                         quoteViewModel.addQuoteToFavorite(quoteId)
-                    }, removeFromFav = {quoteId ->
+                    }, removeFromFav = { quoteId ->
                         quoteViewModel.removeQuoteToFavorite(quoteId)
                     })
                 }
