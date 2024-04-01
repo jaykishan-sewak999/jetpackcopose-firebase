@@ -28,7 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimaryContainer
 
 @Composable
-fun CategoryScreen(CategoryClicked: (String) -> Unit) {
+fun CategoryScreen(categoryClicked: (String) -> Unit) {
     val categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModelFactory())
     val categories by categoryViewModel.categories.observeAsState(initial = emptyList())
 
@@ -43,7 +43,6 @@ fun CategoryScreen(CategoryClicked: (String) -> Unit) {
             CircularProgressIndicator(color = md_theme_light_onPrimaryContainer)
         }
     } else {
-
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,7 +53,7 @@ fun CategoryScreen(CategoryClicked: (String) -> Unit) {
         ) {
             items(categories) { quote ->
                 Card(modifier = Modifier.clickable {
-                    CategoryClicked(quote.id)
+                    categoryClicked(quote.id)
                 }) {
                         Text(
                             text = quote.name,

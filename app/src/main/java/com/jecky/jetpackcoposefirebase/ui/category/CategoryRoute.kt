@@ -4,5 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun CategoryRoute(CategoryClicked: (String) -> Unit) {
-    CategoryScreen(CategoryClicked = CategoryClicked)
+    CategoryScreen(categoryClicked = CategoryClicked)
 }

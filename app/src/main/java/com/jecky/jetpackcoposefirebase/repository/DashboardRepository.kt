@@ -7,14 +7,13 @@ import com.jecky.jetpackcoposefirebase.util.AppConstants
 import kotlinx.coroutines.tasks.await
 
 class DashboardRepository {
-    var fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private var fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     suspend fun getCategories(): APIResult<List<Category>> {
         return try {
             val categoryList = arrayListOf<Category>()
             val userResponse =
                 fireStore.collection(AppConstants.TABLE_CATEGORY).get().await()
-
             for (document in userResponse.documents){
                 val category = document.toObject(Category::class.java)
                 if (category != null) {
@@ -22,7 +21,6 @@ class DashboardRepository {
                     categoryList.add(category)
                 }
             }
-
             APIResult.APISuccess(data = categoryList)
         } catch (e: Exception) {
             APIResult.APIFailure(errorMessage = e.message)

@@ -8,9 +8,7 @@ import kotlinx.coroutines.tasks.await
 
 class AuthRepository {
     private var auth = Firebase.auth
-
     suspend fun register(email: String, password: String): APIResult<AuthResult>? {
-
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
             APIResult.APISuccess(data = result)
@@ -18,7 +16,6 @@ class AuthRepository {
             APIResult.APIFailure(errorMessage = exception.message)
         }
     }
-
     suspend fun login(email: String, password: String): APIResult<AuthResult> {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
@@ -27,5 +24,4 @@ class AuthRepository {
             APIResult.APIFailure(errorMessage = exception.message)
         }
     }
-
 }

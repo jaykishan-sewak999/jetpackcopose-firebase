@@ -87,7 +87,6 @@ class QuotesRepository {
             APIResult.APIFailure(errorMessage = exception.message)
         }
     }
-
     suspend fun getMyFavoriteQuotes(): APIResult<List<Quote>> {
         return try {
             var quoteApiResult: QuerySnapshot? = null
