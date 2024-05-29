@@ -26,7 +26,6 @@ import com.jecky.jetpackcoposefirebase.ui.theme.md_theme_light_onPrimaryContaine
 @Composable
 fun FavoriteQuoteScreen() {
     val quoteViewModel: QuoteViewModel = viewModel(factory = QuoteViewModelFactory())
-
     val quotesList by quoteViewModel.quoteList.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {

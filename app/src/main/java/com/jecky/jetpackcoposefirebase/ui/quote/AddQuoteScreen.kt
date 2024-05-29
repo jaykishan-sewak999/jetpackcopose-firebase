@@ -56,7 +56,7 @@ import com.jecky.jetpackcoposefirebase.util.AppConstants.QUOTE_LENGTH
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddQuoteScreen(onBackPress:  () -> Unit) {
+fun AddQuoteScreen(onBackPress: () -> Unit) {
     val context = LocalContext.current
     val onBack = { onBackPress() }
 
@@ -160,7 +160,6 @@ fun BackPressHandler(
             }
         }
     }
-
     DisposableEffect(key1 = backPressedDispatcher) {
         backPressedDispatcher?.addCallback(backCallback)
 
