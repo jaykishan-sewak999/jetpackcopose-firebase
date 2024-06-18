@@ -14,7 +14,7 @@ class DashboardRepository {
             val categoryList = arrayListOf<Category>()
             val userResponse =
                 fireStore.collection(AppConstants.TABLE_CATEGORY).get().await()
-            for (document in userResponse.documents){
+            for (document in userResponse.documents) {
                 val category = document.toObject(Category::class.java)
                 if (category != null) {
                     category.id = document.id

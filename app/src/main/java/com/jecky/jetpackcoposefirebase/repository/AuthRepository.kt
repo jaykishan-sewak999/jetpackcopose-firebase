@@ -16,6 +16,7 @@ class AuthRepository {
             APIResult.APIFailure(errorMessage = exception.message)
         }
     }
+
     suspend fun login(email: String, password: String): APIResult<AuthResult> {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
